@@ -1,0 +1,9 @@
+checkpoint,n_total,n_safe,n_harmful,TP,TN,FP,FN,fp_rate,fn_rate,precision,recall,f1,refusal_rate
+base__mistral_safety,500,500,0,0,328,172,0,0.344,,0.0,,,0.344
+base__none,500,500,0,0,484,16,0,0.032,,0.0,,,0.032
+dpo__mistral_safety,500,500,0,0,397,103,0,0.206,,0.0,,,0.206
+dpo__none,500,500,0,0,404,96,0,0.192,,0.0,,,0.192
+final__mistral_safety,500,500,0,0,404,96,0,0.192,,0.0,,,0.192
+final__none,500,500,0,0,392,108,0,0.216,,0.0,,,0.216
+sft__mistral_safety,500,500,0,0,267,233,0,0.466,,0.0,,,0.466
+sft__none,500,500,0,0,274,226,0,0.452,,0.0,,,0.452

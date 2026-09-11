@@ -73,6 +73,24 @@ def _ensure_columns(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def _atomic_to_csv(df: pd.DataFrame, csv_path: Path) -> None:
+    """
+    Write df to csv_path without ever exposing a partially-written file to
+    concurrent readers. pandas' plain df.to_csv(path) writes directly into
+    the existing file, which is NOT atomic: a reader (e.g. another SLURM job
+    running filter_missing_sources.py / extract_and_push.py against the same
+    raw_results.csv while this judge job is mid-save) can observe a
+    truncated or malformed file. Writing to a temp file in the same
+    directory and then os.replace()-ing it into place is atomic on POSIX
+    filesystems (same-filesystem rename): a concurrent reader always sees
+    either the complete old file or the complete new one, never a partial
+    write.
+    """
+    tmp_path = csv_path.with_suffix(csv_path.suffix + f".tmp{os.getpid()}")
+    df.to_csv(tmp_path, index=False)
+    os.replace(tmp_path, csv_path)
+
+
 def _rows_to_judge(df: pd.DataFrame, resume: bool) -> pd.DataFrame:
     if resume:
         mask = df["is_coherent"].isna()
@@ -109,7 +127,7 @@ def run_judge_on_file(csv_path: Path, judge, resume: bool, dry_run: bool) -> Non
             df.at[idx, col] = result.get(col)
 
         if i % 50 == 0 or i == total:
-            df.to_csv(csv_path, index=False)
+            _atomic_to_csv(df, csv_path)
             n_done     = int(df["is_coherent"].notna().sum())
             n_coherent = int(df["is_coherent"].fillna(False).sum())
             logger.info(

@@ -11,7 +11,7 @@ Venv: .venv  (NOT .venv-olmo23)
 from dataclasses import dataclass
 from typing import Optional
 
-from datasets_config import ALL_DATASETS
+from dataset_config import ALL_DATASETS
 
 
 # ---------------------------------------------------------------------------

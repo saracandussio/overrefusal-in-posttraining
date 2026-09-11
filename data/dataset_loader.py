@@ -50,7 +50,16 @@ def load_false_reject(cfg: DatasetConfig) -> pd.DataFrame:
 
 
 def load_wildguard(cfg: DatasetConfig) -> pd.DataFrame:
-    ds = _hf_load(cfg.hf_path, None, cfg.hf_split)
+    # allenai/wildguardmix requires an explicit CONFIG name — "wildguardtrain"
+    # or "wildguardtest" — distinct from the SPLIT name inside that config.
+    # Verified empirically: the "wildguardtest" config exposes a single split
+    # literally named "test" (NOT "train" as I originally guessed by analogy
+    # with other single-split HF configs — that guess was wrong and failed
+    # with "Unknown split 'train'. Should be one of ['test']."). So
+    # cfg.hf_split="test" from dataset_config.py is correct as-is for BOTH
+    # purposes here: it already is the right literal split name.
+    wg_config = "wildguardtest" if cfg.hf_split == "test" else "wildguardtrain"
+    ds = _hf_load(cfg.hf_path, wg_config, cfg.hf_split)
     df = ds.to_pandas()
     out = _base_frame(df, cfg,
                       prompt_col=_col(df, ["prompt"]),
@@ -86,6 +95,71 @@ def load_jailbreakbench(cfg: DatasetConfig) -> pd.DataFrame:
     if cfg.max_samples:
         out = out.sample(n=min(cfg.max_samples, len(out)), random_state=42)
     logger.info("JailbreakBench: %d prompts loaded (all harmful)", len(out))
+    return out
+
+
+def load_xstest(cfg: DatasetConfig) -> pd.DataFrame:
+    # walledai/XSTest — gated, requires accepted HF terms. dataset_type is
+    # "over_refusal" here (per dataset_config.py), meaning every row is
+    # forced to label=0, mirroring how load_or_bench/load_false_reject
+    # already treat their over_refusal-type sources. The upstream dataset
+    # itself also ships an unsafe contrast subset; if that subset is ever
+    # needed as label=1, this loader would need to branch on the "label" /
+    # "type" columns instead of forcing 0 uniformly — kept simple for now to
+    # match the DatasetConfig.dataset_type="over_refusal" declared for it.
+    ds = _hf_load(cfg.hf_path, None, cfg.hf_split)
+    df = ds.to_pandas()
+    out = _base_frame(df, cfg,
+                      prompt_col=_col(df, ["prompt", "text"]),
+                      category_col=_col(df, ["type", "category", "note"], required=False))
+    out["label"] = 0
+    if cfg.max_samples:
+        out = out.sample(n=min(cfg.max_samples, len(out)), random_state=42)
+    logger.info("XSTest: %d prompts loaded (all treated as safe/over_refusal)", len(out))
+    return out
+
+
+def load_advbench(cfg: DatasetConfig) -> pd.DataFrame:
+    # walledai/AdvBench — gated, requires accepted HF terms. All prompts are
+    # harmful by construction (label=1), same pattern as load_harmbench.
+    ds = _hf_load(cfg.hf_path, None, cfg.hf_split)
+    df = ds.to_pandas()
+    out = _base_frame(df, cfg,
+                      prompt_col=_col(df, ["prompt", "goal", "target"]),
+                      category_col=_col(df, ["category"], required=False))
+    out["label"] = 1
+    if cfg.max_samples:
+        out = out.sample(n=min(cfg.max_samples, len(out)), random_state=42)
+    logger.info("AdvBench: %d prompts loaded (all harmful)", len(out))
+    return out
+
+
+def load_alpaca(cfg: DatasetConfig) -> pd.DataFrame:
+    # tatsu-lab/alpaca — genuinely harmless baseline (ordinary instructions),
+    # used e.g. by Arditi et al. as the harmless contrast set. Per
+    # dataset_config.py: "il loader concatena instruction + input quando
+    # input non è vuoto" — instruction alone when input is empty/NaN,
+    # otherwise "instruction\ninput".
+    ds = _hf_load(cfg.hf_path, None, cfg.hf_split)
+    df = ds.to_pandas()
+
+    instr_col = _col(df, ["instruction"])
+    input_col = _col(df, ["input"], required=False)
+
+    if input_col is not None:
+        has_input = df[input_col].fillna("").astype(str).str.strip() != ""
+        prompt = df[instr_col].astype(str)
+        prompt = prompt.where(~has_input, df[instr_col].astype(str) + "\n" + df[input_col].astype(str))
+        df = df.assign(_prompt=prompt)
+        prompt_col = "_prompt"
+    else:
+        prompt_col = instr_col
+
+    out = _base_frame(df, cfg,
+                      prompt_col=prompt_col,
+                      category_col=None)
+    out["label"] = 0
+    logger.info("Alpaca: %d prompts loaded (genuinely harmless baseline)", len(out))
     return out
 
 
@@ -134,11 +208,14 @@ def load_beavertails(cfg: DatasetConfig) -> pd.DataFrame:
 _LOADER_MAP = {
     "or_bench":       load_or_bench,
     "false_reject":   load_false_reject,
+    "xstest":         load_xstest,
+    "alpaca":         load_alpaca,
     "wildguard":      load_wildguard,
     "harmbench":      load_harmbench,
+    "advbench":       load_advbench,
     "jailbreakbench": load_jailbreakbench,
     "toxicchat":      load_toxicchat,
-    "beavertails":    load_beavertails,
+    # "beavertails":  RIMOSSO -- 6.96% label error rate (Zhu et al. 2024)
 }
 
 
@@ -183,7 +260,18 @@ def load_all_datasets(dataset_configs: dict) -> pd.DataFrame:
 def _hf_load(path: str, config_name: Optional[str], split: str):
     from datasets import load_dataset
     if "JBB-Behaviors" in path:
-        return load_dataset(path, "behaviors", split="train")
+        # JailbreakBench/JBB-Behaviors requires an explicit CONFIG name
+        # ("behaviors" or "judge_comparison") — this is genuinely required,
+        # confirmed by the error: "Config name is missing. Please pick one
+        # among the available configs: ['behaviors', 'judge_comparison']".
+        # The split, however, must be the caller's cfg.hf_split (e.g.
+        # "harmful" per dataset_config.py), NOT a hardcoded "train" — the
+        # actual splits inside the "behaviors" config are
+        # ['harmful', 'benign'], "train" doesn't exist. An earlier version
+        # of this fix incorrectly hardcoded split="train" here, then a
+        # later "fix" incorrectly removed the config="behaviors" requirement
+        # entirely — both were wrong in opposite directions.
+        return load_dataset(path, "behaviors", split=split)
     if config_name:
         return load_dataset(path, config_name, split=split)
     return load_dataset(path, split=split)
