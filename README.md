@@ -30,12 +30,24 @@ raw_results.csv + judge columns (judge_ga, judge_pd, judge_ga_reason, ...)
         ├── push_to_hf.py               push scored dataset to HuggingFace
         └── plot_results.py             judge-based plots (GA heatmaps, PD breakdown)
 
-run_representation_analysis.py  ← Step 3 (optional): internal representation geometry
-        │
+analysis/extract_and_push.py    ← Step 3 (optional): extract internal activations
+        │                          and push them to a *separate* HF dataset repo
         ▼
-results/<model>/geometry/       (.npz per checkpoint, summary CSVs)
+saracandu/olmo-activations (OLMo2) / saracandu/olmo3-activations (OLMo3)
         │
-        └── analysis/plot_entanglement.py   entanglement plots
+        ├── check_sources.py                        verify what's present on HF
+        ├── analysis/compute_entanglement.py         entanglement + boundary margin
+        ├── analysis/compute_centroid_cosines.py     cross-checkpoint centroid cosines
+        ├── analysis/compute_behavioural_probe.py    behavioural probe (predicted_refusal)
+        ├── analysis/run_classification.py           3-class semantic probe
+        └── analysis/plot_2d_refusal_space*.py,
+            analysis/plot_pca_umap.py,
+            analysis/plot_entanglement_curves.py     figures
+
+NOTE: `run_representation_analysis.py` (older Exp 1-2-3 CLI) imports a
+module (`analysis/representation_analysis.py`) that is not present in this
+repo — it is currently non-functional and has been moved to `_broken/`.
+The pipeline above is the one actually in use.
 ```
 
 ---
@@ -353,45 +365,69 @@ Each model is run under two system prompts: `none` and `mistral_safety`. Checkpo
 overrefusal-in-posttraining/
 ├── run_experiment.py               # Step 1: generate traces
 ├── run_judge.py                    # Step 2: GA/PD two-axis judge
-├── run_representation_analysis.py  # Step 3: entanglement geometry (Exp 1-2-3)
-├── push_to_hf.py                   # Push scored results to HuggingFace
+├── check_sources.py                # Verify activations present on HF (cheap, no activation columns)
+├── filter_missing_sources.py       # Filter raw_results.csv to rows still missing on HF
+├── explore_comprehension_decision.py  # Pre-probe exploration (centroids, PCA), flat+nested aware
 ├── plot_results.py                 # Keyword + judge plots
 │
 ├── config.py                       # OLMo 1
 ├── config_olmo2.py                 # OLMo 2
 ├── config_olmo3.py                 # OLMo 3
 ├── config_olmo3_think.py           # OLMo 3 Think
-├── datasets_config.py              # Dataset registry
+├── dataset_config.py                # Dataset registry (singular filename — required by dataset_loader.py)
 │
 ├── data/
-│   └── dataset_loader.py           # Unified multi-dataset loader
+│   ├── dataset_loader.py           # Unified multi-dataset loader
+│   └── push_to_hf.py               # Push scored raw_results.csv to a HF *results* dataset
+│                                    # (separate repo from the activations one below)
 │
 ├── evaluation/
 │   ├── refusal_detector.py         # Keyword-based refusal detection
 │   ├── metrics.py                  # FP/FN + GA/PD metrics
-│   └── llm_judge.py                # Two-stage judge (coherence + GA/PD)
+│   ├── llm_judge.py                # Two-stage judge (coherence + GA/PD)
+│   └── eval_by_checkpoint.py       # Aggregate GA/PD by checkpoint x source x label
 │
 ├── models/
 │   └── olmo_loader.py              # OLMo/HF model loader
 │
 ├── analysis/
-│   ├── representation_analysis.py  # Core geometry: v_ref, v_over, entanglement
-│   ├── plot_entanglement.py        # Entanglement plots (Exp 1-2-3)
+│   ├── extract_and_push.py         # Extract residual-stream activations, push to HF
+│   ├── compute_entanglement.py     # v_ref/v_over, entanglement, boundary margin
+│   ├── compute_centroid_cosines.py # Cross-checkpoint centroid cosines
+│   ├── compute_behavioural_probe.py# Behavioural probe (predicts predicted_refusal)
+│   ├── run_classification.py       # 3-class semantic probe + cross-transfer
+│   ├── plot_2d_refusal_space.py
+│   ├── plot_2d_refusal_space_behavioral.py
+│   ├── plot_entanglement_curves.py
+│   ├── plot_pca_umap.py
+│   ├── plot_results.py
 │   ├── compare_categories.py
 │   ├── compare_models.py
-│   └── plot_results.py
+│   └── source_filters.py           # Excludes beavertails (known label-noise issue)
+│
+├── docs/
+│   └── exps-status.md              # Running log of OLMo2 experimental findings
+│
+├── _broken/                        # Quarantined, non-functional scripts — see _broken/README.md
+│   └── run_representation_analysis.py.bak
 │
 ├── results/                        # Local only — not committed
-│   ├── olmo2/
-│   │   ├── raw_results.csv
-│   │   └── geometry/               # .npz + summary CSVs from Exp 1-2-3
+│   ├── olmo2/raw_results.csv
 │   ├── olmo3/raw_results.csv
 │   └── olmo3_think/raw_results.csv
 │
 └── requirements.txt
 ```
 
-Add `results/` to `.gitignore`. All results live on HuggingFace.
+Add `results/` to `.gitignore`.
+
+**Where data actually lives (two *separate* HF dataset repos, not one):**
+
+| What | Repo |
+|---|---|
+| Scored text results (prompt/response/judge columns) | `data/push_to_hf.py` target, e.g. `your-org/overrefusal-results` |
+| OLMo2 internal activations | `saracandu/olmo-activations` (default in most `analysis/` scripts) |
+| OLMo3 internal activations | `saracandu/olmo3-activations` — **must be passed explicitly** with `--hf-repo`, since most scripts default to the OLMo2 repo |
 
 ---
 
