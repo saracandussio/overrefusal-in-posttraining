@@ -74,7 +74,7 @@ def load_full_dataset(hf_dataset, layers, position, token, checkpoints, extra_co
     """
     from datasets import load_dataset
 
-    base_cols = ["label", "source", "checkpoint", "predicted_refusal"]
+    base_cols = ["label", "source", "checkpoint", "predicted_refusal", "prompt"]
     if extra_cols:
         base_cols += [c for c in extra_cols if c not in base_cols]
     act_cols = [f"layer_{l}_{position}" for l in layers]
@@ -427,6 +427,12 @@ def main():
     parser.add_argument("--sample",        type=int, default=None)
     parser.add_argument("--seed",          type=int, default=42)
     parser.add_argument("--output-dir",    default="figures/")
+    parser.add_argument("--raw-results-csv", default="results/olmo2/raw_results.csv",
+                        help="CSV con judge_ga/judge_pd per colorare per giudizio "
+                             "del giudice invece che per keyword detector.")
+    parser.add_argument("--refusal-source", default="judge", choices=["judge", "keyword"],
+                        help="'judge' (default): predicted_refusal viene sovrascritto "
+                             "con judge_refusal. 'keyword': comportamento legacy.")
     args = parser.parse_args()
 
     rng = np.random.default_rng(args.seed)
@@ -441,6 +447,18 @@ def main():
     )
     if df_full is None:
         return
+
+    if args.refusal_source == "judge":
+        import sys as _sys, os as _os
+        _sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+        from judge_utils import attach_judge_refusal
+        n_before = len(df_full)
+        df_full = attach_judge_refusal(df_full, args.raw_results_csv, drop_missing=True)
+        df_full["predicted_refusal"] = df_full["judge_refusal"]
+        print(f"[.] Refusal source: JUDGE. {n_before} -> {len(df_full)} righe "
+              f"dopo merge con {args.raw_results_csv}.")
+    else:
+        print("[.] Refusal source: KEYWORD (predicted_refusal, comportamento legacy).")
 
     df_full["group"] = assign_group(df_full)
 

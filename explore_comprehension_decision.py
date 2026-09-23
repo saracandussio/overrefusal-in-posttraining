@@ -45,6 +45,24 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+
+def _has_valid_vector(v) -> bool:
+    """True if v is an actual activation vector (ndarray/list), not NaN/None.
+
+    Needed because flat+nested merges (pd.concat across checkpoints with
+    different available columns, e.g. post_instr_0 missing on nested-only
+    rows) leave the missing cells as NaN scalars instead of (4096,) vectors.
+    """
+    return isinstance(v, (np.ndarray, list))
+
+
+def filter_valid_activations(df: pd.DataFrame, col: str) -> pd.DataFrame:
+    """Drop rows where df[col] isn't a real vector (see _has_valid_vector)."""
+    if col not in df.columns:
+        return df.iloc[0:0]
+    mask = df[col].apply(_has_valid_vector)
+    return df[mask]
+
 logging.basicConfig(
     format="%(asctime)s | %(levelname)s | %(message)s",
     level=logging.INFO,
@@ -85,7 +103,7 @@ def load_checkpoint_df(hf_repo, ckpt, layers, positions, token, max_rows=None,
                         max_rows_per_group=None, model_family=None, nested_only=False):
     from datasets import load_dataset
 
-    base_cols = ["label", "source", "checkpoint", "predicted_refusal"]
+    base_cols = ["label", "source", "checkpoint", "predicted_refusal", "prompt"]
     wanted = [f"layer_{l}_{p}" for l in layers for p in positions]
     keep = set(base_cols) | set(wanted)
     paths = _data_paths(ckpt, model_family, nested_only)
@@ -247,7 +265,18 @@ def centroid_distance_table(all_df: pd.DataFrame, layers: list[int], positions: 
                 g_harm = sub[sub["group"] == "harmful"]
                 g_safe = sub[sub["group"] == "harmless"]
                 g_pseu = sub[sub["group"] == "pseudo_harm"]
+
+                g_harm = filter_valid_activations(g_harm, col)
+                g_safe = filter_valid_activations(g_safe, col)
+                g_pseu = filter_valid_activations(g_pseu, col)
+
                 if len(g_harm) == 0 or len(g_safe) == 0 or len(g_pseu) == 0:
+                    logger.warning(
+                        "centroid_distance_table: skipping %s/%s/layer%d — "
+                        "empty group after dropping missing activations "
+                        "(harm=%d safe=%d pseu=%d)",
+                        ckpt, position, layer, len(g_harm), len(g_safe), len(g_pseu),
+                    )
                     continue
 
                 mu_harm = np.stack(g_harm[col].values).astype(np.float32).mean(0)
@@ -286,16 +315,21 @@ def nearest_centroid_read(all_df: pd.DataFrame, layers: list[int], positions: li
                 if col not in sub.columns:
                     continue
 
-                g_harm = sub[sub["group"] == "harmful"]
-                g_safe = sub[sub["group"] == "harmless"]
+                g_harm = filter_valid_activations(sub[sub["group"] == "harmful"], col)
+                g_safe = filter_valid_activations(sub[sub["group"] == "harmless"], col)
                 if len(g_harm) == 0 or len(g_safe) == 0:
+                    logger.warning(
+                        "nearest_centroid_read: skipping %s/%s/layer%d — "
+                        "empty centroid group after dropping missing activations",
+                        ckpt, position, layer,
+                    )
                     continue
 
                 mu_harm = np.stack(g_harm[col].values).astype(np.float32).mean(0)
                 mu_safe = np.stack(g_safe[col].values).astype(np.float32).mean(0)
 
                 for group_name in ["harmful", "harmless", "pseudo_harm"]:
-                    g = sub[sub["group"] == group_name]
+                    g = filter_valid_activations(sub[sub["group"] == group_name], col)
                     if len(g) == 0:
                         continue
                     X = np.stack(g[col].values).astype(np.float32)
@@ -371,7 +405,7 @@ def plot_pca(all_df: pd.DataFrame, checkpoint: str, layer: int, position: str, o
 
     parts = []
     for group in ["harmful", "harmless", "pseudo_harm"]:
-        g = sub[sub["group"] == group]
+        g = filter_valid_activations(sub[sub["group"] == group], col)
         if len(g) == 0:
             continue
         parts.append(g.sample(min(sample_per_group, len(g)), random_state=seed))
@@ -398,8 +432,8 @@ def plot_pca(all_df: pd.DataFrame, checkpoint: str, layer: int, position: str, o
 
     panel_idx = 1
     if has_read:
-        mu_harm = np.stack(sub[sub["group"] == "harmful"][col].values).astype(np.float32).mean(0)
-        mu_safe = np.stack(sub[sub["group"] == "harmless"][col].values).astype(np.float32).mean(0)
+        mu_harm = np.stack(filter_valid_activations(sub[sub["group"] == "harmful"], col)[col].values).astype(np.float32).mean(0)
+        mu_safe = np.stack(filter_valid_activations(sub[sub["group"] == "harmless"], col)[col].values).astype(np.float32).mean(0)
         d_harm = np.linalg.norm(X - mu_harm, axis=1)
         d_safe = np.linalg.norm(X - mu_safe, axis=1)
         plot_df["model_read"] = (d_harm < d_safe).astype(int)
@@ -463,6 +497,12 @@ def main():
                              "checkpoint (now safe: ~5800 rows/checkpoint after the "
                              "columns= pruning fix, no longer OOM-prone like before).")
     parser.add_argument("--out-dir", default="results/olmo2/geometry/explore")
+    parser.add_argument("--raw-results-csv", default="results/olmo2/raw_results.csv",
+                        help="CSV con judge_ga/judge_pd, per usare il giudizio del "
+                             "giudice al posto del keyword detector predicted_refusal.")
+    parser.add_argument("--refusal-source", default="judge", choices=["judge", "keyword"],
+                        help="'judge' (default): predicted_refusal viene sovrascritto "
+                             "con judge_refusal via merge. 'keyword': comportamento legacy.")
     args = parser.parse_args()
 
     token = os.environ.get("HF_TOKEN") or open(
@@ -490,6 +530,19 @@ def main():
         return
 
     all_df = pd.concat(all_frames, ignore_index=True)
+
+    if args.refusal_source == "judge":
+        from analysis.judge_utils import attach_judge_refusal
+        n_before = len(all_df)
+        all_df = attach_judge_refusal(all_df, args.raw_results_csv, drop_missing=True)
+        all_df["predicted_refusal"] = all_df["judge_refusal"]
+        logger.info(
+            "Refusal source: JUDGE. %d -> %d righe dopo merge con %s.",
+            n_before, len(all_df), args.raw_results_csv,
+        )
+    else:
+        logger.info("Refusal source: KEYWORD (predicted_refusal, comportamento legacy).")
+
     all_df["group"] = assign_group(all_df)
 
     behavior_tab = print_behavior_rates(all_df)

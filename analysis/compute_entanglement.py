@@ -220,6 +220,15 @@ def main():
                         help="Source da escludere completamente dal dataset "
                              "(es. --exclude-sources beavertails). "
                              "Influenza sia il calcolo delle direzioni che v_beh.")
+    parser.add_argument("--raw-results-csv", default="results/olmo2/raw_results.csv",
+                        help="CSV con judge_ga/judge_pd, per costruire v_beh "
+                             "dal giudizio del giudice invece che dal keyword "
+                             "detector (predicted_refusal). Deve corrispondere "
+                             "allo stesso --hf-repo/checkpoint set.")
+    parser.add_argument("--refusal-source", default="judge", choices=["judge", "keyword"],
+                        help="'judge' (default): usa judge_ga/judge_pd via merge "
+                             "con --raw-results-csv. 'keyword': comportamento "
+                             "legacy, usa predicted_refusal dalle attivazioni.")
     args = parser.parse_args()
 
     logger.info("Loading dataset from %s ...", args.hf_repo)
@@ -231,7 +240,7 @@ def main():
 
     # Carica checkpoint per checkpoint per evitare CastError da schema misto
     # (i checkpoint mistral_safety hanno 7 colonne post_instr, gli altri 3)
-    base_cols = ["label", "source", "checkpoint", "predicted_refusal"]
+    base_cols = ["label", "source", "checkpoint", "predicted_refusal", "prompt"]
     dfs = []
     layers = None
 
@@ -271,6 +280,21 @@ def main():
             "Escluse source %s: %d -> %d righe",
             args.exclude_sources, before, len(df),
         )
+
+    if args.refusal_source == "judge":
+        import sys as _sys, os as _os
+        _sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+        from judge_utils import attach_judge_refusal
+        n_before = len(df)
+        df = attach_judge_refusal(df, args.raw_results_csv, drop_missing=True)
+        logger.info(
+            "Refusal source: JUDGE (judge_ga>=2 AND judge_pd==0 -> compliance). "
+            "%d -> %d righe dopo il merge con %s.",
+            n_before, len(df), args.raw_results_csv,
+        )
+        df["predicted_refusal"] = df["judge_refusal"]
+    else:
+        logger.info("Refusal source: KEYWORD (predicted_refusal, comportamento legacy).")
 
     logger.info("Layers: %s | position: %s", layers, args.token_position)
 

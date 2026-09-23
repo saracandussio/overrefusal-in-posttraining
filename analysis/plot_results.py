@@ -180,6 +180,9 @@ def plot_fp_fn(raw_df: pd.DataFrame, out_dir: Path, use_judge: bool = False) -> 
         logger.warning("Skipping fp_fn plot: missing label column.")
         return
 
+    import sys as _sys, os as _os
+    _repo_root = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+    _sys.path.insert(0, _repo_root)
     from evaluation.metrics import compute_metrics, compute_judge_metrics
 
     try:
@@ -275,11 +278,18 @@ def plot_judge_heatmap(raw_df: pd.DataFrame, out_dir: Path) -> None:
 # Dispatcher
 # ---------------------------------------------------------------------------
 
+def plot_fp_fn_both(raw_df: pd.DataFrame, out_dir: Path) -> None:
+    """Genera sia fp_fn_keyword.png che fp_fn_judge.png in un colpo solo."""
+    plot_fp_fn(raw_df, out_dir, use_judge=False)
+    plot_fp_fn(raw_df, out_dir, use_judge=True)
+
+
 ALL_PLOTS = {
-    "refusal_rate":   plot_refusal_rate,
+    "refusal_rate":    plot_refusal_rate,
     "judge_breakdown": plot_judge_breakdown,
-    "heatmap":        plot_heatmap,
-    "judge_heatmap":  plot_judge_heatmap,
+    "fp_fn":           plot_fp_fn_both,
+    "heatmap":         plot_heatmap,
+    "judge_heatmap":   plot_judge_heatmap,
 }
 
 
@@ -305,11 +315,7 @@ def run_plots(
             continue
         logger.info("Generating plot: %s", name)
         try:
-            if name == "fp_fn":
-                plot_fp_fn(df, out, use_judge=False)
-                plot_fp_fn(df, out, use_judge=True)
-            else:
-                fn(df, out)
+            fn(df, out)
         except Exception as exc:
             logger.error("Plot %s failed: %s", name, exc)
 
@@ -330,7 +336,7 @@ def main():
     )
     parser.add_argument(
         "--plots", nargs="+", default=None,
-        choices=list(ALL_PLOTS.keys()) + ["fp_fn"],
+        choices=list(ALL_PLOTS.keys()),
         help="Which plots to generate. Default: all.",
     )
     parser.add_argument(
