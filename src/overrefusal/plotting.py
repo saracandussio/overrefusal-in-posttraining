@@ -31,9 +31,11 @@ plt.rcParams.update({
 })
 
 
-def grid(n_rows: int, n_cols: int, size: float = 2.6, share: bool = True):
+def grid(n_rows: int, n_cols: int, size: float = 2.6, share: bool | str = True):
+    """share=True: same x and y everywhere; "row": same y along each row."""
+    sharex = share is True or share == "row"
     fig, axes = plt.subplots(n_rows, n_cols, figsize=(size * n_cols, size * n_rows),
-                             squeeze=False, sharex=share, sharey=share)
+                             squeeze=False, sharex=sharex, sharey=share)
     return fig, axes
 
 

@@ -63,7 +63,8 @@ def main():
             if j == 0:
                 ax.set_ylabel(ckpt.removesuffix("__none"))
     plotting.legend(fig)
-    fig.suptitle(f"{args.family}, {args.position}, {args.basis} basis")
+    fig.suptitle(f"{args.family}, {config.position_label(args.family, args.position)}, "
+                 f"{args.basis} basis")
 
     out = config.results_dir(args.family) / "figures" / f"scatter_{args.basis}_{args.position}.png"
     out.parent.mkdir(parents=True, exist_ok=True)

@@ -1,8 +1,4 @@
-"""Loading checkpoints and building the exact text they see.
-
-`build_prompt` is used both for generation and for activation extraction,
-so the two can never disagree about the context.
-"""
+"""Loading checkpoints and generating with them (prompts are in prompts.py)."""
 from __future__ import annotations
 
 import gc
@@ -33,15 +29,6 @@ def unload(model) -> None:
     gc.collect()
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
-
-
-def build_prompt(tok, user_message: str, stage: str) -> str:
-    """Base model: the raw user text, no framing. Others: their chat template,
-    no system prompt."""
-    if stage == "base":
-        return user_message
-    return tok.apply_chat_template([{"role": "user", "content": user_message}],
-                                   tokenize=False, add_generation_prompt=True)
 
 
 @torch.inference_mode()

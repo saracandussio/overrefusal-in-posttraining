@@ -16,6 +16,9 @@ Two model families, OLMo 2 and OLMo 3, chosen with `--family` on every script.
 | Q4 | Which stage moves the representations? | `drift.py` | `geometry/drift.csv` |
 | Q5 | What does a linear read-out recover, beyond dataset identity? | `probe.py` | `geometry/probes.csv` |
 
+Checks prompt by prompt: `inspect_cell.py` (permutation test, length
+confound, the texts at the extremes, SFT→DPO flips).
+
 Figures: `fig_axis.py` (measures across layers and positions, from `axis.csv`),
 `fig_scatter.py` (every prompt as a point, refusal plane or PCA).
 
@@ -48,12 +51,21 @@ BeaverTails is excluded everywhere (label noise, see `config.py`).
 refused otherwise. Incoherent responses are neither and are left out of rates;
 their share is always printed, because it is about 40% for the base model.
 For the base model "refused" mostly means "did not really answer": read the
-PD rate next to it for explicit refusals. The keyword detector is kept only as
-a cross-check column.
+PD rate next to it for explicit refusals. `response_type` splits "refused"
+into hard refusal, answer with distancing and partial answer: DPO mostly
+turns hard refusals into answers with distancing. The keyword detector is
+kept only as a cross-check column.
+
+**Base model prompt** (`prompts.py`). The base model has no chat template; it
+gets the minimal frame `User: {prompt}\nAssistant:` (`config.BASE_FRAME`) in
+both generation and extraction, and its answer is cut at the first
+`\nUser:` it invents. Without a frame it continues the text instead of
+answering, and refusal is not defined.
 
 **Positions** (`config.py`, `activations.py`). `last_prompt` is the last token
-of the user's text; `post_instr_0..k` are the chat-template tokens after it
-(none for the base model, which sees raw text); `pre_gen` is an alias for the
+of the user's text; `post_instr_0..k` are the template tokens after it (for
+the base model, the three tokens of `\nAssistant:`, which are not the chat
+ones: compare base and chat only at last_prompt, pre_gen, first_gen); `pre_gen` is an alias for the
 last of them, where the model decides; `first_gen` is the first generated
 token, whose state already encodes the chosen word, so it is read *after* the
 decision.
@@ -64,9 +76,13 @@ The module docstring maps each measure to its old name.
 
 ## Known limits
 
-- The base model's generations and activations see the raw prompt; every
-  other stage sees its chat template. Base vs SFT therefore mixes training with
-  formatting.
+- OLMo 3's chat template inserts a default system prompt when none is given;
+  OLMo 2's does not. OLMo 2 also splits `<|assistant|>` into five tokens
+  (see `config.TEMPLATE_TOKENS`); the two `|` positions carry little signal.
+
+- The base model sees a minimal dialogue frame, every other stage its chat
+  template. Base vs SFT therefore mixes training with formatting; SFT vs DPO
+  vs final does not.
 - Probe accuracy on groups can come from dataset identity; read
   `loso_accuracy` before `cv_accuracy`.
 - Raw centroid cosines across checkpoints are close to 1 by construction;

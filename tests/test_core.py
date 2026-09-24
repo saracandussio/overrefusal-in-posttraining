@@ -130,3 +130,30 @@ def test_reading_order():
     assert activations.reading_order(
         ["first_gen", "post_instr_10", "post_instr_2", "last_prompt"]
     ) == ["last_prompt", "post_instr_2", "post_instr_10", "first_gen"]
+
+
+def test_position_labels_match_template_length():
+    from overrefusal import config
+    assert config.position_label("olmo2", "post_instr_3") == "post_instr_3 (assistant)"
+    assert config.position_label("olmo3", "post_instr_4").endswith("(\\n)")
+    assert config.position_label("olmo2", "post_instr_9") == "post_instr_9"  # unknown: unchanged
+    assert config.position_label("olmo2", "first_gen") == "first_gen"
+
+
+def test_response_types_refine_refused():
+    df = pd.DataFrame({"judge_ga": [3, 1, 3, 0, np.nan], "judge_pd": [0, 0, 1, 1, np.nan],
+                       "is_coherent": [True, True, True, True, False]})
+    types = refusal.response_type(df).tolist()
+    assert types[:4] == ["full answer", "partial answer", "answer with distancing", "hard refusal"]
+    assert pd.isna(types[4])
+    # everything but "full answer" counts as refused
+    assert refusal.judge_refusal(df).tolist()[:4] == [0, 1, 1, 1]
+
+
+def test_base_gets_the_dialogue_frame_and_is_cut():
+    from overrefusal import prompts
+    text = prompts.build_prompt(None, "How do I bake bread?", "base")
+    assert text == "User: How do I bake bread?\nAssistant:"
+    out = prompts.clean_response(" Knead the dough.\nUser: and then?\nAssistant: ...", "base")
+    assert out == " Knead the dough."
+    assert prompts.clean_response("a\nUser: b", "sft") == "a\nUser: b"  # chat models untouched

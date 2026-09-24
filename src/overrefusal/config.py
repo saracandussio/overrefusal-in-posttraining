@@ -73,6 +73,34 @@ LAYER_PERCENTILES = [25, 50, 60, 75, 80, 100]
 #                the decision, so use it knowingly.
 FIXED_POSITIONS = ["last_prompt", "pre_gen", "first_gen"]
 
+# What each template token is, decoded from the tokenizers. OLMo 2 has no
+# special token for <|assistant|>, so it is split into five pieces; the two
+# "|" carry almost no information and give unstable axis measures.
+# OLMo 3's template also inserts a default system prompt ("You are a
+# helpful function-calling AI assistant...") when none is given.
+TEMPLATE_TOKENS: dict[str, list[str]] = {
+    "olmo2": ["\\n", "<", "|", "assistant", "|", ">", "\\n"],
+    "olmo3": ["<|im_end|>", "\\n", "<|im_start|>", "assistant", "\\n"],
+}
+
+
+# The base model has no chat template. It gets a minimal dialogue frame, so
+# that it answers instead of continuing the text; its template tokens are
+# therefore different from the chat models' (post_instr_k of base and of
+# sft are different tokens: only last_prompt, pre_gen, first_gen compare).
+BASE_FRAME = "User: {message}\nAssistant:"
+BASE_STOP = "\nUser:"          # the base goes on inventing turns; cut there
+BASE_TEMPLATE_TOKENS = ["\\n", "Assistant", ":"]
+
+
+def position_label(family: str, position: str, stage: str = "sft") -> str:
+    """Readable name for a position, e.g. post_instr_3 -> 'assistant'."""
+    if position.startswith("post_instr_"):
+        k = int(position.rsplit("_", 1)[1])
+        tokens = BASE_TEMPLATE_TOKENS if stage == "base" else TEMPLATE_TOKENS.get(family, [])
+        return f"{position} ({tokens[k]})" if k < len(tokens) else position
+    return position
+
 
 def select_layers(n_layers: int) -> list[int]:
     return sorted({min(round(p / 100 * n_layers), n_layers - 1) for p in LAYER_PERCENTILES})
