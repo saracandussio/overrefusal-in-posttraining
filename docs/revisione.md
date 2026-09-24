@@ -94,10 +94,17 @@ Quindi la riga "base" delle tabelle di comportamento e tutta la geometria
 del base (anche OLMo3, che sembrava pulito) non sono affidabili. SFT, DPO e
 final non sono toccati.
 
+**Prova diretta (24 settembre).** Rigenerando con greedy decoding lo stesso
+prompt nei due modi, le risposte salvate del base di OLMo2 coincidono con la
+cornice per OR-Bench (generato a giugno) e con il testo grezzo per WildGuard
+(generato il 5 agosto). I log confermano la cronologia: le generazioni di
+giugno avevano la cornice, quelle del 5 agosto no.
+
 **Scelta:** il base usa la cornice `User: … Assistant:` per tutte le fonti,
 in generazione ed estrazione (`config.BASE_FRAME`, `prompts.py`), e la
-risposta viene tagliata al primo `\nUser:` inventato. Si rifà con
-`sbatch jobs/redo_base.sh olmo2` e `olmo3`. Tra base e chat si confrontano
+risposta viene tagliata al primo `\nUser:` inventato. Il base si rifà per
+intero (generazione, giudice, estrazione) su tutte le fonti, in entrambe le
+famiglie: `jobs/redo_base.sh`, poi `jobs/judge_gptoss_local.sh ... base`. Tra base e chat si confrontano
 `last_prompt`, `pre_gen` (ruolo uguale, token diverso: `:` contro `\n`) e
 `first_gen`; i token intermedi del template no.
 
@@ -145,3 +152,22 @@ nominate): il rifiuto lì non è per forza un errore.
 `scripts/inspect_cell.py` (job: `jobs/inspect.sh`): t di ogni prompt per tipo
 di risposta, test di permutazione dentro ogni fonte, controllo sulla
 lunghezza, i prompt agli estremi, e i prompt che DPO fa cambiare.
+
+## Il giudice (24 settembre)
+
+Tutti i giudizi esistenti (SFT, DPO, final, entrambe le famiglie) vengono da
+gpt-oss-120b sul servizio ORFEO, che non lo offre più. Per non mescolare
+giudici diversi:
+
+- **Giudice principale:** gpt-oss-120b (MXFP4) servito in locale con vLLM
+  su una A100 (`jobs/judge_gptoss_local.sh`). Prima di giudicare il base si
+  rigiudicano 300 risposte già giudicate da ORFEO e si misura l'accordo
+  (`scripts/judge_agreement.py`). Stesse istruzioni, stesso modello: le
+  differenze possibili vengono dall'impostazione del servizio (livello di
+  ragionamento, versione del server), ed è quello che la calibrazione misura.
+- **Secondo giudice, per robustezza:** DeepSeek-V4-Flash via ORFEO, stessa
+  griglia GA/PD, su SFT, DPO e final (`jobs/judge_api.sh`). I risultati vanno
+  in `results/<famiglia>/judges/`, non toccano `raw_results.csv`.
+
+Da riportare nel paper: accordo (kappa) tra i due giudici e tra gpt-oss via
+ORFEO e gpt-oss locale.

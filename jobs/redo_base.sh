@@ -1,34 +1,29 @@
 #!/bin/bash
 #SBATCH --job-name=redo-base
-#SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
 #SBATCH --time=12:00:00
 #SBATCH --output=slurm_outputs/%x-%j.out
-# #SBATCH --partition=...        # la partizione GPU del cluster
 
-# Rifà da zero il base di una famiglia con la cornice "User: ...\nAssistant:":
-# generazione, giudice, estrazione. Uso: sbatch jobs/redo_base.sh olmo2
-# Le righe vecchie restano in raw_results.csv finché le nuove non sono pronte
-# (e in git); su HF le shard vecchie restano nella storia del repo.
+# Rigenera ed estrae il base di una famiglia con la cornice "User: ...\nAssistant:".
+# Il giudice NON è qui: parte dopo, con jobs/judge_gptoss_local.sh FAMIGLIA base.
+# La GPU si chiede al lancio (una qualsiasi da 24 GB in su):
+#   sbatch -p <partizione> --gres=gpu:1 jobs/redo_base.sh olmo2
 
 FAMILY=${1:?uso: sbatch jobs/redo_base.sh olmo2}
 source .overenv/bin/activate
 set -euo pipefail
 export HF_HOME=/share/ai-lab/scandussio/hf_cache
+export HF_TOKEN=${HF_TOKEN:-$(cat ~/.cache/huggingface/token 2>/dev/null || cat ~/.hf_token 2>/dev/null || true)}
+[ -n "$HF_TOKEN" ] || { echo "manca il token HF"; exit 1; }
 export PYTHONUNBUFFERED=1
 step() { echo; echo "=== $(date '+%H:%M') $* ==="; }
+python -c "import torch; print('GPU:', torch.cuda.get_device_name(0))"
 
-step "generazione (GPU)"
+step "generazione"
 python scripts/generate.py --family "$FAMILY" --checkpoints base__none --redo
 
-step "giudice (API, serve JUDGE_API_KEY nel .env)"
-python scripts/judge.py --family "$FAMILY" --checkpoints base__none
-
-step "comportamento aggiornato"
-python scripts/behavior.py --family "$FAMILY"
-
-step "estrazione (GPU), sostituisce le shard del base su HF"
+step "estrazione, sostituisce le shard del base su HF"
 python scripts/extract.py --family "$FAMILY" --checkpoints base__none --replace
 
-step "fine"
+step "fine: ora il giudice (jobs/judge_gptoss_local.sh $FAMILY base)"
