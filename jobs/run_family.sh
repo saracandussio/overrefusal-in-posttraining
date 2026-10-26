@@ -22,7 +22,12 @@ python scripts/axis.py --family "$FAMILY" --per-source --bootstrap 300
 python scripts/fig_axis.py --family "$FAMILY"
 
 step "drift"
-python scripts/drift.py --family "$FAMILY" --positions pre_gen first_gen
+# template tokens, post-trained stages only (the base has different template tokens)
+python scripts/drift.py --family "$FAMILY" --positions post_instr \
+    --checkpoints sft__none dpo__none final__none
+mv "results/$FAMILY/geometry/drift.csv" "results/$FAMILY/geometry/drift_template.csv"
+# comparable positions, all four stages -> drift.csv
+python scripts/drift.py --family "$FAMILY" --positions last_prompt pre_gen first_gen
 
 step "scatter"
 for pos in pre_gen first_gen; do
