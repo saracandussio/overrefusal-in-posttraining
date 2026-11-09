@@ -1,5 +1,9 @@
 """Geometry of the three groups along the refusal axis.
 
+Legacy: single-axis measures, used by the scripts in scripts/to-check and the
+results they produced. New analyses measure distances in the full space with
+centroids.py instead.
+
 Every quantity here is a function of five centroids, computed per
 (checkpoint, layer, position):
 

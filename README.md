@@ -71,7 +71,15 @@ last of them, where the model decides; `first_gen` is the first generated
 token, whose state already encodes the chosen word, so it is read *after* the
 decision.
 
-**Geometry** (`geometry.py`). All measures are functions of five centroids,
+**Centroids** (`centroids.py`). Distances of every prompt to the centroids of the
+genuinely harmless and genuinely harmful prompts (dataset labels, never behaviour),
+in the full space after per-dimension standardisation, with the spread of each
+group as the yardstick. Reference prompts are measured out of fold.
+
+**Probes** (`probes.py`). Standardise, then logistic regression; the scaler is
+refitted inside every fold.
+
+**Geometry, legacy** (`geometry.py`, used by `scripts/to-check`). All measures are functions of five centroids,
 so confidence intervals come from a stratified bootstrap of those centroids.
 The module docstring maps each measure to its old name.
 

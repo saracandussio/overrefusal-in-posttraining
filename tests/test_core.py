@@ -157,3 +157,84 @@ def test_base_gets_the_dialogue_frame_and_is_cut():
     out = prompts.clean_response(" Knead the dough.\nUser: and then?\nAssistant: ...", "base")
     assert out == " Knead the dough."
     assert prompts.clean_response("a\nUser: b", "sft") == "a\nUser: b"  # chat models untouched
+
+
+# --------------------------------------------------------------------------
+# probes.py and centroids.py
+# --------------------------------------------------------------------------
+from overrefusal import centroids, probes  # noqa: E402
+
+
+def outlier_clouds(n=150, d=40, seed=0):
+    """Signal on dim 1, a huge irrelevant variance on dim 0 (as in the residual stream)."""
+    rng = np.random.default_rng(seed)
+    X = rng.normal(0, 1, (2 * n, d))
+    X[:, 0] *= 1e3
+    groups = np.array(["harmless"] * n + ["harmful"] * n)
+    X[groups == "harmful", 1] += 3
+    return X, groups
+
+
+def test_probe_standardises_inside_each_fold():
+    X, groups = outlier_clouds()
+    clf = probes.make()
+    assert clf.steps[0][0] == "standardscaler"
+    auroc, _ = probes.cv_auroc(X, (groups == "harmful").astype(int))
+    assert auroc > 0.9
+
+
+def test_outlier_dimension_does_not_dominate_distances():
+    X, groups = outlier_clouds()
+    per_row, _ = centroids.measure(X, groups)
+    right = per_row.closer_to.to_numpy() == groups
+    assert right.mean() > 0.85
+
+
+def test_scale_is_within_group_not_total():
+    X, groups = outlier_clouds()
+    ref = centroids.fit_reference(X, groups)
+    # the separating dimension keeps unit scale: the 3-unit gap does not inflate it
+    assert ref.scale[1] == pytest.approx(1, abs=0.15)
+
+
+def test_reference_rows_are_measured_out_of_fold():
+    X, groups = outlier_clouds(n=60, d=200)  # few prompts, many dims: in-sample bias is large
+    per_row, summary = centroids.measure(X, groups)
+    ref = centroids.fit_reference(X, groups)
+    in_sample = ref.distances(X[groups == "harmless"])["harmless"].mean()
+    assert summary["harmless_mean"] > in_sample
+    assert per_row.out_of_fold.all()
+
+
+def test_pseudo_rows_are_measured_not_used():
+    X, groups = outlier_clouds()
+    rng = np.random.default_rng(1)
+    pseudo = rng.normal(0, 1, (50, X.shape[1]))
+    pseudo[:, 1] += 1.5                                     # halfway
+    X2 = np.vstack([X, pseudo, pseudo + 100])               # wild pseudo rows
+    g2 = np.concatenate([groups, ["pseudo_harm"] * 100])
+    a = centroids.fit_reference(X, groups)
+    b = centroids.fit_reference(X2, g2)
+    assert np.allclose(a.shift, b.shift) and np.allclose(a.scale, b.scale)
+    per_row, _ = centroids.measure(X2, g2)
+    half = per_row.iloc[len(X):len(X) + 50]
+    assert not half.out_of_fold.any()
+    # halfway prompts: on average as far from one centroid as from the other
+    assert abs((half.d_harmless - half.d_harmful).mean()) < 0.03
+
+
+def test_z_is_zero_on_average_for_members():
+    X, groups = outlier_clouds()
+    per_row, _ = centroids.measure(X, groups)
+    assert per_row.z_harmful[groups == "harmful"].mean() == pytest.approx(0, abs=1e-9)
+
+
+def test_measure_frame_keeps_index_and_skips_missing():
+    X, groups = outlier_clouds(n=30, d=8)
+    vecs = list(X)
+    vecs[3] = None
+    df = pd.DataFrame({"layer_16_pre_gen": vecs, "group": groups}, index=np.arange(100, 160))
+    per_row, summary = centroids.measure_frame(df, "layer_16_pre_gen")
+    assert 103 not in per_row.index and len(per_row) == 59
+    assert summary["n_missing"] == 1
+    assert (per_row.group == df.loc[per_row.index, "group"]).all()

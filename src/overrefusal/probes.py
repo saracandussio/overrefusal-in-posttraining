@@ -1,10 +1,18 @@
 """Linear probes on activations.
 
+Every probe standardises its input first (mean 0, variance 1 per dimension,
+estimated on the training split only). The residual stream has a few
+dimensions with values orders of magnitude larger than the rest; without
+scaling, the L2 penalty barely constrains them and they dominate the probe.
+
 The groups are defined by source (pseudo_harm = OR-Bench/FalseReject/XSTest,
 harmless = Alpaca/ToxicChat/WildGuard...), so a probe can reach high accuracy
 by recognising *which dataset* a prompt comes from rather than what it asks.
 `leave_one_source_out` is the control: train without a source, test on it.
 A probe that has learned the concept still labels the unseen source correctly.
+
+Numbers from before the scaler (results produced by scripts/to-check) are not
+comparable with numbers from these probes.
 """
 from __future__ import annotations
 
@@ -12,11 +20,15 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import cross_val_predict
+from sklearn.pipeline import Pipeline, make_pipeline
+from sklearn.preprocessing import StandardScaler
 
 
-def make() -> LogisticRegression:
-    # Same settings as the original probes, so old numbers stay comparable.
-    return LogisticRegression(C=0.1, max_iter=1000, random_state=42)
+def make() -> Pipeline:
+    """Scaler + logistic regression. Inside cross-validation the scaler is
+    refitted on each training fold, so no statistic leaks from the test fold."""
+    return make_pipeline(StandardScaler(),
+                         LogisticRegression(C=0.1, max_iter=1000, random_state=42))
 
 
 def cv_accuracy(X: np.ndarray, y: np.ndarray, folds: int = 5) -> float:
@@ -29,7 +41,7 @@ def cv_auroc(X: np.ndarray, y: np.ndarray, folds: int = 5) -> tuple[float, np.nd
     return float(roc_auc_score(y, scores)), scores
 
 
-def fit(X: np.ndarray, y: np.ndarray) -> LogisticRegression:
+def fit(X: np.ndarray, y: np.ndarray) -> Pipeline:
     return make().fit(X, y)
 
 
