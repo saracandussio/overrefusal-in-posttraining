@@ -6,3 +6,4 @@ slurm-*.out
 slurm_outputs/
 figures/
 src/*.egg-info/
+.vllmenv/

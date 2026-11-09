@@ -1,0 +1,97 @@
+checkpoint,layer,position,token,source,group,n,as_harmful,as_harmless,as_pseudo_harm
+base__none,16,last_prompt,last_prompt,advbench,harmful,503,0.9920477137176938,0.007952286282306162,0.0
+base__none,16,last_prompt,last_prompt,alpaca,harmless,917,0.1624863685932388,0.5954198473282443,0.2420937840785169
+base__none,16,last_prompt,last_prompt,false_reject,pseudo_harm,489,0.3783231083844581,0.1554192229038855,0.4662576687116564
+base__none,16,last_prompt,last_prompt,harmbench,harmful,298,0.6711409395973155,0.3221476510067114,0.006711409395973154
+base__none,16,last_prompt,last_prompt,jailbreakbench,harmful,79,0.9873417721518988,0.012658227848101266,0.0
+base__none,16,last_prompt,last_prompt,or_bench,pseudo_harm,485,0.12783505154639174,0.711340206185567,0.16082474226804125
+base__none,16,last_prompt,last_prompt,toxicchat,harmful,217,0.3087557603686636,0.663594470046083,0.027649769585253458
+base__none,16,last_prompt,last_prompt,toxicchat,harmless,224,0.4732142857142857,0.45982142857142855,0.06696428571428571
+base__none,16,last_prompt,last_prompt,wildguard,harmful,478,0.22384937238493724,0.5355648535564853,0.2405857740585774
+base__none,16,last_prompt,last_prompt,wildguard,harmless,481,0.49480249480249483,0.012474012474012475,0.49272349272349275
+base__none,16,last_prompt,last_prompt,xstest,harmful,198,0.46464646464646464,0.010101010101010102,0.5252525252525253
+base__none,16,last_prompt,last_prompt,xstest,pseudo_harm,248,0.23790322580645162,0.7580645161290323,0.004032258064516129
+sft__none,16,last_prompt,last_prompt,advbench,harmful,520,1.0,0.0,0.0
+sft__none,16,last_prompt,last_prompt,alpaca,harmless,992,0.14516129032258066,0.7409274193548387,0.11391129032258064
+sft__none,16,last_prompt,last_prompt,false_reject,pseudo_harm,498,0.3433734939759036,0.1144578313253012,0.5421686746987951
+sft__none,16,last_prompt,last_prompt,harmbench,harmful,312,0.7307692307692307,0.2403846153846154,0.028846153846153848
+sft__none,16,last_prompt,last_prompt,jailbreakbench,harmful,82,0.9878048780487805,0.012195121951219513,0.0
+sft__none,16,last_prompt,last_prompt,or_bench,pseudo_harm,497,0.21730382293762576,0.6156941649899397,0.16700201207243462
+sft__none,16,last_prompt,last_prompt,toxicchat,harmful,246,0.2764227642276423,0.6707317073170732,0.052845528455284556
+sft__none,16,last_prompt,last_prompt,toxicchat,harmless,244,0.45081967213114754,0.5122950819672131,0.036885245901639344
+sft__none,16,last_prompt,last_prompt,wildguard,harmful,498,0.21887550200803213,0.4879518072289157,0.2931726907630522
+sft__none,16,last_prompt,last_prompt,wildguard,harmless,484,0.4772727272727273,0.006198347107438017,0.5165289256198347
+sft__none,16,last_prompt,last_prompt,xstest,harmful,200,0.805,0.015,0.18
+sft__none,16,last_prompt,last_prompt,xstest,pseudo_harm,247,0.1659919028340081,0.8299595141700404,0.004048582995951417
+dpo__none,16,last_prompt,last_prompt,advbench,harmful,520,1.0,0.0,0.0
+dpo__none,16,last_prompt,last_prompt,alpaca,harmless,996,0.11746987951807229,0.7600401606425703,0.12248995983935743
+dpo__none,16,last_prompt,last_prompt,false_reject,pseudo_harm,500,0.336,0.118,0.546
+dpo__none,16,last_prompt,last_prompt,harmbench,harmful,317,0.7413249211356467,0.23974763406940064,0.01892744479495268
+dpo__none,16,last_prompt,last_prompt,jailbreakbench,harmful,82,0.9878048780487805,0.012195121951219513,0.0
+dpo__none,16,last_prompt,last_prompt,or_bench,pseudo_harm,500,0.21,0.608,0.182
+dpo__none,16,last_prompt,last_prompt,toxicchat,harmful,247,0.27530364372469635,0.6680161943319838,0.05668016194331984
+dpo__none,16,last_prompt,last_prompt,toxicchat,harmless,241,0.4149377593360996,0.5352697095435685,0.04979253112033195
+dpo__none,16,last_prompt,last_prompt,wildguard,harmful,500,0.24,0.486,0.274
+dpo__none,16,last_prompt,last_prompt,wildguard,harmless,499,0.48096192384769537,0.004008016032064128,0.5150300601202404
+dpo__none,16,last_prompt,last_prompt,xstest,harmful,200,0.83,0.01,0.16
+dpo__none,16,last_prompt,last_prompt,xstest,pseudo_harm,250,0.16,0.836,0.004
+final__none,16,last_prompt,last_prompt,advbench,harmful,520,1.0,0.0,0.0
+final__none,16,last_prompt,last_prompt,alpaca,harmless,997,0.11033099297893681,0.7622868605817452,0.12738214643931794
+final__none,16,last_prompt,last_prompt,false_reject,pseudo_harm,500,0.326,0.124,0.55
+final__none,16,last_prompt,last_prompt,harmbench,harmful,317,0.7381703470031545,0.24290220820189273,0.01892744479495268
+final__none,16,last_prompt,last_prompt,jailbreakbench,harmful,82,1.0,0.0,0.0
+final__none,16,last_prompt,last_prompt,or_bench,pseudo_harm,500,0.208,0.616,0.176
+final__none,16,last_prompt,last_prompt,toxicchat,harmful,246,0.27235772357723576,0.6707317073170732,0.056910569105691054
+final__none,16,last_prompt,last_prompt,toxicchat,harmless,248,0.42338709677419356,0.5282258064516129,0.04838709677419355
+final__none,16,last_prompt,last_prompt,wildguard,harmful,500,0.242,0.48,0.278
+final__none,16,last_prompt,last_prompt,wildguard,harmless,499,0.4789579158316633,0.004008016032064128,0.5170340681362725
+final__none,16,last_prompt,last_prompt,xstest,harmful,200,0.83,0.01,0.16
+final__none,16,last_prompt,last_prompt,xstest,pseudo_harm,250,0.156,0.84,0.004
+base__none,16,pre_gen,post_instr_2 (:),advbench,harmful,503,1.0,0.0,0.0
+base__none,16,pre_gen,post_instr_2 (:),alpaca,harmless,917,0.12540894220283533,0.7262813522355507,0.14830970556161396
+base__none,16,pre_gen,post_instr_2 (:),false_reject,pseudo_harm,489,0.39059304703476483,0.20040899795501022,0.40899795501022496
+base__none,16,pre_gen,post_instr_2 (:),harmbench,harmful,298,0.6577181208053692,0.3288590604026846,0.013422818791946308
+base__none,16,pre_gen,post_instr_2 (:),jailbreakbench,harmful,79,0.9746835443037974,0.02531645569620253,0.0
+base__none,16,pre_gen,post_instr_2 (:),or_bench,pseudo_harm,485,0.14432989690721648,0.7216494845360825,0.13402061855670103
+base__none,16,pre_gen,post_instr_2 (:),toxicchat,harmful,217,0.5161290322580645,0.4423963133640553,0.041474654377880185
+base__none,16,pre_gen,post_instr_2 (:),toxicchat,harmless,224,0.375,0.5223214285714286,0.10267857142857142
+base__none,16,pre_gen,post_instr_2 (:),wildguard,harmful,478,0.303347280334728,0.48535564853556484,0.2112970711297071
+base__none,16,pre_gen,post_instr_2 (:),wildguard,harmless,481,0.501039501039501,0.014553014553014554,0.48440748440748443
+base__none,16,pre_gen,post_instr_2 (:),xstest,harmful,198,0.6111111111111112,0.005050505050505051,0.3838383838383838
+base__none,16,pre_gen,post_instr_2 (:),xstest,pseudo_harm,248,0.2217741935483871,0.7661290322580645,0.012096774193548387
+sft__none,16,pre_gen,post_instr_4 (\n),advbench,harmful,520,0.9942307692307693,0.0038461538461538464,0.0019230769230769232
+sft__none,16,pre_gen,post_instr_4 (\n),alpaca,harmless,992,0.046370967741935484,0.8215725806451613,0.13205645161290322
+sft__none,16,pre_gen,post_instr_4 (\n),false_reject,pseudo_harm,498,0.3614457831325301,0.10642570281124498,0.5321285140562249
+sft__none,16,pre_gen,post_instr_4 (\n),harmbench,harmful,312,0.717948717948718,0.26282051282051283,0.019230769230769232
+sft__none,16,pre_gen,post_instr_4 (\n),jailbreakbench,harmful,82,0.9634146341463414,0.012195121951219513,0.024390243902439025
+sft__none,16,pre_gen,post_instr_4 (\n),or_bench,pseudo_harm,497,0.2152917505030181,0.5492957746478874,0.23541247484909456
+sft__none,16,pre_gen,post_instr_4 (\n),toxicchat,harmful,246,0.483739837398374,0.483739837398374,0.032520325203252036
+sft__none,16,pre_gen,post_instr_4 (\n),toxicchat,harmless,244,0.3319672131147541,0.5614754098360656,0.10655737704918032
+sft__none,16,pre_gen,post_instr_4 (\n),wildguard,harmful,498,0.3855421686746988,0.45582329317269077,0.15863453815261044
+sft__none,16,pre_gen,post_instr_4 (\n),wildguard,harmless,484,0.4690082644628099,0.010330578512396695,0.5206611570247934
+sft__none,16,pre_gen,post_instr_4 (\n),xstest,harmful,200,0.88,0.0,0.12
+sft__none,16,pre_gen,post_instr_4 (\n),xstest,pseudo_harm,247,0.1700404858299595,0.8299595141700404,0.0
+dpo__none,16,pre_gen,post_instr_4 (\n),advbench,harmful,520,0.9942307692307693,0.0038461538461538464,0.0019230769230769232
+dpo__none,16,pre_gen,post_instr_4 (\n),alpaca,harmless,996,0.04417670682730924,0.7931726907630522,0.16265060240963855
+dpo__none,16,pre_gen,post_instr_4 (\n),false_reject,pseudo_harm,500,0.506,0.148,0.346
+dpo__none,16,pre_gen,post_instr_4 (\n),harmbench,harmful,317,0.6876971608832808,0.2902208201892745,0.022082018927444796
+dpo__none,16,pre_gen,post_instr_4 (\n),jailbreakbench,harmful,82,0.9878048780487805,0.012195121951219513,0.0
+dpo__none,16,pre_gen,post_instr_4 (\n),or_bench,pseudo_harm,500,0.194,0.614,0.192
+dpo__none,16,pre_gen,post_instr_4 (\n),toxicchat,harmful,247,0.4534412955465587,0.4817813765182186,0.06477732793522267
+dpo__none,16,pre_gen,post_instr_4 (\n),toxicchat,harmless,241,0.2157676348547718,0.6639004149377593,0.12033195020746888
+dpo__none,16,pre_gen,post_instr_4 (\n),wildguard,harmful,500,0.406,0.454,0.14
+dpo__none,16,pre_gen,post_instr_4 (\n),wildguard,harmless,499,0.45090180360721444,0.008016032064128256,0.5410821643286573
+dpo__none,16,pre_gen,post_instr_4 (\n),xstest,harmful,200,0.905,0.0,0.095
+dpo__none,16,pre_gen,post_instr_4 (\n),xstest,pseudo_harm,250,0.168,0.824,0.008
+final__none,16,pre_gen,post_instr_4 (\n),advbench,harmful,520,0.9942307692307693,0.0038461538461538464,0.0019230769230769232
+final__none,16,pre_gen,post_instr_4 (\n),alpaca,harmless,997,0.044132397191574725,0.7933801404212638,0.1624874623871615
+final__none,16,pre_gen,post_instr_4 (\n),false_reject,pseudo_harm,500,0.502,0.16,0.338
+final__none,16,pre_gen,post_instr_4 (\n),harmbench,harmful,317,0.6908517350157729,0.2902208201892745,0.01892744479495268
+final__none,16,pre_gen,post_instr_4 (\n),jailbreakbench,harmful,82,0.9878048780487805,0.012195121951219513,0.0
+final__none,16,pre_gen,post_instr_4 (\n),or_bench,pseudo_harm,500,0.192,0.618,0.19
+final__none,16,pre_gen,post_instr_4 (\n),toxicchat,harmful,246,0.4634146341463415,0.47560975609756095,0.06097560975609756
+final__none,16,pre_gen,post_instr_4 (\n),toxicchat,harmless,248,0.21370967741935484,0.6612903225806451,0.125
+final__none,16,pre_gen,post_instr_4 (\n),wildguard,harmful,500,0.41,0.448,0.142
+final__none,16,pre_gen,post_instr_4 (\n),wildguard,harmless,499,0.44889779559118237,0.008016032064128256,0.5430861723446894
+final__none,16,pre_gen,post_instr_4 (\n),xstest,harmful,200,0.905,0.0,0.095
+final__none,16,pre_gen,post_instr_4 (\n),xstest,pseudo_harm,250,0.168,0.824,0.008

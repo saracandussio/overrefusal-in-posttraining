@@ -1,0 +1,136 @@
+pair,layer,position,token,chance,outcome,n,jaccard_mean,jaccard_median
+sft__none vs dpo__none,16,last_prompt,last_prompt,0.005195344970906068,all,1244,0.9148219131462392,0.9230769230769231
+sft__none vs dpo__none,16,last_prompt,last_prompt,0.005195344970906068,ans -> ans,864,0.9203033231609223,0.9230769230769231
+sft__none vs dpo__none,16,last_prompt,last_prompt,0.005195344970906068,ans -> ref,6,0.9368471035137702,0.9230769230769231
+sft__none vs dpo__none,16,last_prompt,last_prompt,0.005195344970906068,ref -> ans,172,0.9038551609819425,0.9230769230769231
+sft__none vs dpo__none,16,last_prompt,last_prompt,0.005195344970906068,ref -> ref,202,0.9000604872916241,0.9230769230769231
+dpo__none vs final__none,16,last_prompt,last_prompt,0.00516422226812642,all,1248,0.9755866610834559,1.0
+dpo__none vs final__none,16,last_prompt,last_prompt,0.00516422226812642,ans -> ans,1004,0.9765751807584477,1.0
+dpo__none vs final__none,16,last_prompt,last_prompt,0.00516422226812642,ans -> ref,36,0.9707016234794013,1.0
+dpo__none vs final__none,16,last_prompt,last_prompt,0.00516422226812642,ref -> ans,21,0.9563152896486231,0.9230769230769231
+dpo__none vs final__none,16,last_prompt,last_prompt,0.00516422226812642,ref -> ref,187,0.9733839145603852,1.0
+sft__none vs final__none,16,last_prompt,last_prompt,0.005197505197505198,all,1244,0.9102170730465412,0.9230769230769231
+sft__none vs final__none,16,last_prompt,last_prompt,0.005197505197505198,ans -> ans,863,0.9152504712899487,0.9230769230769231
+sft__none vs final__none,16,last_prompt,last_prompt,0.005197505197505198,ans -> ref,8,0.934116809116809,0.9230769230769231
+sft__none vs final__none,16,last_prompt,last_prompt,0.005197505197505198,ref -> ans,158,0.8979319635661598,0.9230769230769231
+sft__none vs final__none,16,last_prompt,last_prompt,0.005197505197505198,ref -> ref,215,0.8981520810710867,0.9230769230769231
+sft__none vs dpo__none,16,post_instr_0,post_instr_0 (\n),0.005196424859696529,all,1244,0.8812472270050292,0.9230769230769231
+sft__none vs dpo__none,16,post_instr_0,post_instr_0 (\n),0.005196424859696529,ans -> ans,864,0.8843831670812942,0.9230769230769231
+sft__none vs dpo__none,16,post_instr_0,post_instr_0 (\n),0.005196424859696529,ans -> ref,6,0.9139533306199974,0.9230769230769231
+sft__none vs dpo__none,16,post_instr_0,post_instr_0 (\n),0.005196424859696529,ref -> ans,172,0.8645012330405663,0.8518518518518519
+sft__none vs dpo__none,16,post_instr_0,post_instr_0 (\n),0.005196424859696529,ref -> ref,202,0.8811215939075276,0.8518518518518519
+dpo__none vs final__none,16,post_instr_0,post_instr_0 (\n),0.005165289256198347,all,1248,0.9649858984794883,1.0
+dpo__none vs final__none,16,post_instr_0,post_instr_0 (\n),0.005165289256198347,ans -> ans,1004,0.9657000812379298,1.0
+dpo__none vs final__none,16,post_instr_0,post_instr_0 (\n),0.005165289256198347,ans -> ref,36,0.9493510604621714,0.9230769230769231
+dpo__none vs final__none,16,post_instr_0,post_instr_0 (\n),0.005165289256198347,ref -> ans,21,0.9607632226679845,1.0
+dpo__none vs final__none,16,post_instr_0,post_instr_0 (\n),0.005165289256198347,ref -> ref,187,0.9646355822826411,1.0
+sft__none vs final__none,16,post_instr_0,post_instr_0 (\n),0.0051985859846121855,all,1244,0.8759689497796372,0.8518518518518519
+sft__none vs final__none,16,post_instr_0,post_instr_0 (\n),0.0051985859846121855,ans -> ans,863,0.8782501756912781,0.9230769230769231
+sft__none vs final__none,16,post_instr_0,post_instr_0 (\n),0.0051985859846121855,ans -> ref,8,0.8467748726369417,0.8518518518518519
+sft__none vs final__none,16,post_instr_0,post_instr_0 (\n),0.0051985859846121855,ref -> ans,158,0.8621593636294395,0.8518518518518519
+sft__none vs final__none,16,post_instr_0,post_instr_0 (\n),0.0051985859846121855,ref -> ref,215,0.8780469463709238,0.8518518518518519
+sft__none vs dpo__none,16,post_instr_1,post_instr_1 (<),0.005196424859696529,all,1244,0.8035042090232057,0.7857142857142857
+sft__none vs dpo__none,16,post_instr_1,post_instr_1 (<),0.005196424859696529,ans -> ans,864,0.7985947875452359,0.7857142857142857
+sft__none vs dpo__none,16,post_instr_1,post_instr_1 (<),0.005196424859696529,ans -> ref,6,0.7601071767738433,0.7261904761904762
+sft__none vs dpo__none,16,post_instr_1,post_instr_1 (<),0.005196424859696529,ref -> ans,172,0.8047007600908738,0.7857142857142857
+sft__none vs dpo__none,16,post_instr_1,post_instr_1 (<),0.005196424859696529,ref -> ref,202,0.8247730979678745,0.8518518518518519
+dpo__none vs final__none,16,post_instr_1,post_instr_1 (<),0.005165289256198347,all,1248,0.9569829291038398,1.0
+dpo__none vs final__none,16,post_instr_1,post_instr_1 (<),0.005165289256198347,ans -> ans,1004,0.9575059550159153,1.0
+dpo__none vs final__none,16,post_instr_1,post_instr_1 (<),0.005165289256198347,ans -> ref,36,0.9661285216840771,1.0
+dpo__none vs final__none,16,post_instr_1,post_instr_1 (<),0.005165289256198347,ref -> ans,21,0.9461112080159699,0.9230769230769231
+dpo__none vs final__none,16,post_instr_1,post_instr_1 (<),0.005165289256198347,ref -> ref,187,0.9536350509981342,0.9230769230769231
+sft__none vs final__none,16,post_instr_1,post_instr_1 (<),0.0051985859846121855,all,1244,0.7973122841757387,0.7857142857142857
+sft__none vs final__none,16,post_instr_1,post_instr_1 (<),0.0051985859846121855,ans -> ans,863,0.7922894377564985,0.7857142857142857
+sft__none vs final__none,16,post_instr_1,post_instr_1 (<),0.0051985859846121855,ans -> ref,8,0.8305457314078004,0.8518518518518519
+sft__none vs final__none,16,post_instr_1,post_instr_1 (<),0.0051985859846121855,ref -> ans,158,0.8014231165442602,0.7857142857142857
+sft__none vs final__none,16,post_instr_1,post_instr_1 (<),0.0051985859846121855,ref -> ref,215,0.8132161789093263,0.8518518518518519
+sft__none vs dpo__none,16,post_instr_2,post_instr_2 (|),0.005196424859696529,all,1244,0.8570453317565931,0.8518518518518519
+sft__none vs dpo__none,16,post_instr_2,post_instr_2 (|),0.005196424859696529,ans -> ans,864,0.8668139830804817,0.8518518518518519
+sft__none vs dpo__none,16,post_instr_2,post_instr_2 (|),0.005196424859696529,ans -> ref,6,0.7913245758073343,0.7857142857142857
+sft__none vs dpo__none,16,post_instr_2,post_instr_2 (|),0.005196424859696529,ref -> ans,172,0.8399875620127613,0.8518518518518519
+sft__none vs dpo__none,16,post_instr_2,post_instr_2 (|),0.005196424859696529,ref -> ref,202,0.8317391247654798,0.8518518518518519
+dpo__none vs final__none,16,post_instr_2,post_instr_2 (|),0.005165289256198347,all,1248,0.960635421939025,1.0
+dpo__none vs final__none,16,post_instr_2,post_instr_2 (|),0.005165289256198347,ans -> ans,1004,0.96294613048288,1.0
+dpo__none vs final__none,16,post_instr_2,post_instr_2 (|),0.005165289256198347,ans -> ref,36,0.9496506579839914,0.9230769230769231
+dpo__none vs final__none,16,post_instr_2,post_instr_2 (|),0.005165289256198347,ref -> ans,21,0.9563152896486231,0.9230769230769231
+dpo__none vs final__none,16,post_instr_2,post_instr_2 (|),0.005165289256198347,ref -> ref,187,0.9508291272997155,0.9230769230769231
+sft__none vs final__none,16,post_instr_2,post_instr_2 (|),0.0051985859846121855,all,1244,0.856336920561636,0.8518518518518519
+sft__none vs final__none,16,post_instr_2,post_instr_2 (|),0.0051985859846121855,ans -> ans,863,0.8645525119842156,0.8518518518518519
+sft__none vs final__none,16,post_instr_2,post_instr_2 (|),0.0051985859846121855,ans -> ref,8,0.8294624436865816,0.8518518518518519
+sft__none vs final__none,16,post_instr_2,post_instr_2 (|),0.0051985859846121855,ref -> ans,158,0.8393323706422123,0.8518518518518519
+sft__none vs final__none,16,post_instr_2,post_instr_2 (|),0.0051985859846121855,ref -> ref,215,0.8368562661643474,0.8518518518518519
+sft__none vs dpo__none,16,post_instr_3,post_instr_3 (assistant),0.005196424859696529,all,1244,0.814974609957951,0.8518518518518519
+sft__none vs dpo__none,16,post_instr_3,post_instr_3 (assistant),0.005196424859696529,ans -> ans,864,0.8122049668760222,0.8518518518518519
+sft__none vs dpo__none,16,post_instr_3,post_instr_3 (assistant),0.005196424859696529,ans -> ref,6,0.7703036914197462,0.7549261083743842
+sft__none vs dpo__none,16,post_instr_3,post_instr_3 (assistant),0.005196424859696529,ref -> ans,172,0.8205045349385315,0.8518518518518519
+sft__none vs dpo__none,16,post_instr_3,post_instr_3 (assistant),0.005196424859696529,ref -> ref,202,0.823439214103277,0.8518518518518519
+dpo__none vs final__none,16,post_instr_3,post_instr_3 (assistant),0.005165289256198347,all,1248,0.9609274717447795,1.0
+dpo__none vs final__none,16,post_instr_3,post_instr_3 (assistant),0.005165289256198347,ans -> ans,1004,0.9607931724465589,1.0
+dpo__none vs final__none,16,post_instr_3,post_instr_3 (assistant),0.005165289256198347,ans -> ref,36,0.957423235201013,0.9230769230769231
+dpo__none vs final__none,16,post_instr_3,post_instr_3 (assistant),0.005165289256198347,ref -> ans,21,0.9743589743589745,1.0
+dpo__none vs final__none,16,post_instr_3,post_instr_3 (assistant),0.005165289256198347,ref -> ref,187,0.9608147843441962,1.0
+sft__none vs final__none,16,post_instr_3,post_instr_3 (assistant),0.0051985859846121855,all,1244,0.811996793122499,0.8518518518518519
+sft__none vs final__none,16,post_instr_3,post_instr_3 (assistant),0.0051985859846121855,ans -> ans,863,0.8082504794718981,0.8518518518518519
+sft__none vs final__none,16,post_instr_3,post_instr_3 (assistant),0.0051985859846121855,ans -> ref,8,0.7995938654309066,0.8187830687830688
+sft__none vs final__none,16,post_instr_3,post_instr_3 (assistant),0.0051985859846121855,ref -> ans,158,0.8231919882859963,0.8518518518518519
+sft__none vs final__none,16,post_instr_3,post_instr_3 (assistant),0.0051985859846121855,ref -> ref,215,0.8192686594767719,0.8518518518518519
+sft__none vs dpo__none,16,post_instr_4,post_instr_4 (|),0.005196424859696529,all,1244,0.6990526358863086,0.7241379310344828
+sft__none vs dpo__none,16,post_instr_4,post_instr_4 (|),0.005196424859696529,ans -> ans,864,0.7083348409590248,0.7241379310344828
+sft__none vs dpo__none,16,post_instr_4,post_instr_4 (|),0.005196424859696529,ans -> ref,6,0.6433974851313561,0.6397849462365591
+sft__none vs dpo__none,16,post_instr_4,post_instr_4 (|),0.005196424859696529,ref -> ans,172,0.6789407495696043,0.6666666666666666
+sft__none vs dpo__none,16,post_instr_4,post_instr_4 (|),0.005196424859696529,ref -> ref,202,0.6781286268178736,0.6666666666666666
+dpo__none vs final__none,16,post_instr_4,post_instr_4 (|),0.005165289256198347,all,1248,0.9513719024246213,0.9230769230769231
+dpo__none vs final__none,16,post_instr_4,post_instr_4 (|),0.005165289256198347,ans -> ans,1004,0.9529706598500389,0.9230769230769231
+dpo__none vs final__none,16,post_instr_4,post_instr_4 (|),0.005165289256198347,ans -> ref,36,0.9430990819879708,0.9230769230769231
+dpo__none vs final__none,16,post_instr_4,post_instr_4 (|),0.005165289256198347,ref -> ans,21,0.9670329670329672,1.0
+dpo__none vs final__none,16,post_instr_4,post_instr_4 (|),0.005165289256198347,ref -> ref,187,0.9426220988087114,0.9230769230769231
+sft__none vs final__none,16,post_instr_4,post_instr_4 (|),0.0051985859846121855,all,1244,0.7036773071837295,0.7241379310344828
+sft__none vs final__none,16,post_instr_4,post_instr_4 (|),0.0051985859846121855,ans -> ans,863,0.7126828616251019,0.7241379310344828
+sft__none vs final__none,16,post_instr_4,post_instr_4 (|),0.0051985859846121855,ans -> ref,8,0.6155988608632068,0.6129032258064516
+sft__none vs final__none,16,post_instr_4,post_instr_4 (|),0.0051985859846121855,ref -> ans,158,0.6872461980363993,0.6666666666666666
+sft__none vs final__none,16,post_instr_4,post_instr_4 (|),0.0051985859846121855,ref -> ref,215,0.6828817226857662,0.6666666666666666
+sft__none vs dpo__none,16,post_instr_5,post_instr_5 (>),0.005196424859696529,all,1244,0.633352245143156,0.6666666666666666
+sft__none vs dpo__none,16,post_instr_5,post_instr_5 (>),0.005196424859696529,ans -> ans,864,0.611276620759527,0.6129032258064516
+sft__none vs dpo__none,16,post_instr_5,post_instr_5 (>),0.005196424859696529,ans -> ref,6,0.5610660218503356,0.5686274509803921
+sft__none vs dpo__none,16,post_instr_5,post_instr_5 (>),0.005196424859696529,ref -> ans,172,0.6831094003761367,0.7241379310344828
+sft__none vs dpo__none,16,post_instr_5,post_instr_5 (>),0.005196424859696529,ref -> ref,202,0.6875543545844416,0.6666666666666666
+dpo__none vs final__none,16,post_instr_5,post_instr_5 (>),0.005165289256198347,all,1248,0.9307745262451882,0.9230769230769231
+dpo__none vs final__none,16,post_instr_5,post_instr_5 (>),0.005165289256198347,ans -> ans,1004,0.9285716060092415,0.9230769230769231
+dpo__none vs final__none,16,post_instr_5,post_instr_5 (>),0.005165289256198347,ans -> ref,36,0.9473556279111836,0.9230769230769231
+dpo__none vs final__none,16,post_instr_5,post_instr_5 (>),0.005165289256198347,ref -> ans,21,0.9495319495319495,0.9230769230769231
+dpo__none vs final__none,16,post_instr_5,post_instr_5 (>),0.005165289256198347,ref -> ref,187,0.9373034373034371,0.9230769230769231
+sft__none vs final__none,16,post_instr_5,post_instr_5 (>),0.0051985859846121855,all,1244,0.6219721200237965,0.6129032258064516
+sft__none vs final__none,16,post_instr_5,post_instr_5 (>),0.0051985859846121855,ans -> ans,863,0.5990495726676113,0.6129032258064516
+sft__none vs final__none,16,post_instr_5,post_instr_5 (>),0.0051985859846121855,ans -> ref,8,0.6784168990051344,0.7261904761904762
+sft__none vs final__none,16,post_instr_5,post_instr_5 (>),0.0051985859846121855,ref -> ans,158,0.6717000053609142,0.6666666666666666
+sft__none vs final__none,16,post_instr_5,post_instr_5 (>),0.0051985859846121855,ref -> ref,215,0.6753376746901814,0.6666666666666666
+sft__none vs dpo__none,16,post_instr_6,post_instr_6 (\n),0.005196424859696529,all,1244,0.583137630688418,0.6129032258064516
+sft__none vs dpo__none,16,post_instr_6,post_instr_6 (\n),0.005196424859696529,ans -> ans,864,0.5614487686735116,0.5625
+sft__none vs dpo__none,16,post_instr_6,post_instr_6 (\n),0.005196424859696529,ans -> ref,6,0.5754248943904116,0.6666666666666666
+sft__none vs dpo__none,16,post_instr_6,post_instr_6 (\n),0.005196424859696529,ref -> ans,172,0.6211078708199835,0.6666666666666666
+sft__none vs dpo__none,16,post_instr_6,post_instr_6 (\n),0.005196424859696529,ref -> ref,202,0.643803828193556,0.6666666666666666
+dpo__none vs final__none,16,post_instr_6,post_instr_6 (\n),0.005165289256198347,all,1248,0.9282522415334694,0.9230769230769231
+dpo__none vs final__none,16,post_instr_6,post_instr_6 (\n),0.005165289256198347,ans -> ans,1004,0.9266130668203135,0.9230769230769231
+dpo__none vs final__none,16,post_instr_6,post_instr_6 (\n),0.005165289256198347,ans -> ref,36,0.9280457197123864,0.9230769230769231
+dpo__none vs final__none,16,post_instr_6,post_instr_6 (\n),0.005165289256198347,ref -> ans,21,0.9325154563249801,0.9230769230769231
+dpo__none vs final__none,16,post_instr_6,post_instr_6 (\n),0.005165289256198347,ref -> ref,187,0.9366139457417347,0.9230769230769231
+sft__none vs final__none,16,post_instr_6,post_instr_6 (\n),0.0051985859846121855,all,1244,0.571586467624815,0.6129032258064516
+sft__none vs final__none,16,post_instr_6,post_instr_6 (\n),0.0051985859846121855,ans -> ans,863,0.5490320508319649,0.5625
+sft__none vs final__none,16,post_instr_6,post_instr_6 (\n),0.0051985859846121855,ans -> ref,8,0.6109245406120406,0.6145833333333333
+sft__none vs final__none,16,post_instr_6,post_instr_6 (\n),0.0051985859846121855,ref -> ans,158,0.6050598063974241,0.6129032258064516
+sft__none vs final__none,16,post_instr_6,post_instr_6 (\n),0.0051985859846121855,ref -> ref,215,0.6360560935888133,0.6666666666666666
+sft__none vs dpo__none,16,first_gen,first_gen,0.005195344970906068,all,1244,0.36005638305572063,0.3888888888888889
+sft__none vs dpo__none,16,first_gen,first_gen,0.005195344970906068,ans -> ans,864,0.3224929236595412,0.35135135135135137
+sft__none vs dpo__none,16,first_gen,first_gen,0.005195344970906068,ans -> ref,6,0.3671540578868165,0.38996138996138996
+sft__none vs dpo__none,16,first_gen,first_gen,0.005195344970906068,ref -> ans,172,0.2543694696771579,0.08695652173913043
+sft__none vs dpo__none,16,first_gen,first_gen,0.005195344970906068,ref -> ref,202,0.6105038680578259,0.6666666666666666
+dpo__none vs final__none,16,first_gen,first_gen,0.00516422226812642,all,1248,0.8598039683162033,0.9230769230769231
+dpo__none vs final__none,16,first_gen,first_gen,0.00516422226812642,ans -> ans,1004,0.8497761717048296,0.9230769230769231
+dpo__none vs final__none,16,first_gen,first_gen,0.00516422226812642,ans -> ref,36,0.8338364310586532,0.9230769230769231
+dpo__none vs final__none,16,first_gen,first_gen,0.00516422226812642,ref -> ans,21,0.8435761769095103,0.9230769230769231
+dpo__none vs final__none,16,first_gen,first_gen,0.00516422226812642,ref -> ref,187,0.920464517827601,0.9230769230769231
+sft__none vs final__none,16,first_gen,first_gen,0.005197505197505198,all,1244,0.3471417252809636,0.35135135135135137
+sft__none vs final__none,16,first_gen,first_gen,0.005197505197505198,ans -> ans,863,0.3092533098142373,0.3157894736842105
+sft__none vs final__none,16,first_gen,first_gen,0.005197505197505198,ans -> ref,8,0.34308417454597123,0.4297385620915033
+sft__none vs final__none,16,first_gen,first_gen,0.005197505197505198,ref -> ans,158,0.221074145252271,0.06382978723404255
+sft__none vs final__none,16,first_gen,first_gen,0.005197505197505198,ref -> ref,215,0.592020053644676,0.6666666666666666

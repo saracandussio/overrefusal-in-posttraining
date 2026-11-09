@@ -1,0 +1,59 @@
+\begin{table}[!htbp]
+\centering
+\small
+\begin{tabular}{llccc}
+\toprule
+Layer & Token & SFT & DPO & Final \\
+\midrule
+8 & \texttt{\textbackslash n} & 0.43 & 0.43 & 0.43 \\
+ & \texttt{\textless{}} & 0.40 & 0.39 & 0.39 \\
+ & \texttt{\textbar{}}$^{\dagger}$ & 0.54 & 0.56 & 0.56 \\
+ & \texttt{assistant} & 0.62 & 0.59 & 0.59 \\
+ & \texttt{\textbar{}}$^{\dagger}$ & 0.47 & 0.47 & 0.46 \\
+ & \texttt{\textgreater{}} & 0.56 & 0.55 & 0.55 \\
+ & \texttt{\textbackslash n} & 0.58 & 0.58 & 0.58 \\
+\midrule
+16 & \texttt{\textbackslash n} & 0.40 & 0.40 & 0.40 \\
+ & \texttt{\textless{}} & 0.36 & 0.35 & 0.35 \\
+ & \texttt{\textbar{}}$^{\dagger}$ & $-$0.25 & 0.01 & $-$0.01 \\
+ & \texttt{assistant} & 0.44 & 0.41 & 0.41 \\
+ & \texttt{\textbar{}}$^{\dagger}$ & 0.24 & 0.25 & 0.26 \\
+ & \texttt{\textgreater{}} & 0.43 & 0.40 & 0.40 \\
+ & \texttt{\textbackslash n} & 0.37 & 0.35 & 0.36 \\
+\midrule
+19 & \texttt{\textbackslash n} & 0.41 & 0.40 & 0.40 \\
+ & \texttt{\textless{}} & 0.31 & 0.30 & 0.30 \\
+ & \texttt{\textbar{}}$^{\dagger}$ & $-$0.19 & $-$0.04 & $-$0.04 \\
+ & \texttt{assistant} & 0.43 & 0.39 & 0.39 \\
+ & \texttt{\textbar{}}$^{\dagger}$ & $-$0.22 & $-$0.37 & $-$0.34 \\
+ & \texttt{\textgreater{}} & 0.35 & 0.30 & 0.30 \\
+ & \texttt{\textbackslash n} & 0.32 & 0.28 & 0.28 \\
+\midrule
+24 & \texttt{\textbackslash n} & 0.39 & 0.38 & 0.39 \\
+ & \texttt{\textless{}} & 0.29 & 0.27 & 0.27 \\
+ & \texttt{\textbar{}}$^{\dagger}$ & $-$0.11 & $-$0.02 & $-$0.02 \\
+ & \texttt{assistant} & 0.43 & 0.39 & 0.39 \\
+ & \texttt{\textbar{}}$^{\dagger}$ & $-$0.04 & $-$0.22 & $-$0.18 \\
+ & \texttt{\textgreater{}} & 0.30 & 0.25 & 0.25 \\
+ & \texttt{\textbackslash n} & 0.28 & 0.24 & 0.24 \\
+\midrule
+26 & \texttt{\textbackslash n} & 0.39 & 0.38 & 0.39 \\
+ & \texttt{\textless{}} & 0.29 & 0.26 & 0.26 \\
+ & \texttt{\textbar{}}$^{\dagger}$ & $-$0.02 & 0.05 & 0.05 \\
+ & \texttt{assistant} & 0.44 & 0.40 & 0.39 \\
+ & \texttt{\textbar{}}$^{\dagger}$ & 0.27 & 0.14 & 0.15 \\
+ & \texttt{\textgreater{}} & 0.30 & 0.25 & 0.25 \\
+ & \texttt{\textbackslash n} & 0.28 & 0.24 & 0.24 \\
+\midrule
+31 & \texttt{\textbackslash n} & 0.30 & 0.32 & 0.32 \\
+ & \texttt{\textless{}} & 0.27 & 0.24 & 0.24 \\
+ & \texttt{\textbar{}}$^{\dagger}$ & 0.37 & 0.30 & 0.30 \\
+ & \texttt{assistant} & 0.43 & 0.40 & 0.41 \\
+ & \texttt{\textbar{}}$^{\dagger}$ & 0.44 & 0.38 & 0.37 \\
+ & \texttt{\textgreater{}} & 0.31 & 0.26 & 0.26 \\
+ & \texttt{\textbackslash n} & 0.29 & 0.24 & 0.24 \\
+\bottomrule
+\end{tabular}
+\caption{OLMo 2: position $t$ of the pseudo-harmful centroid at each template token. $^{\dagger}$Low-signal token, unstable measures.}
+\label{tab:centroid_template_olmo2}
+\end{table}

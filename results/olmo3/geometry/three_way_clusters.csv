@@ -1,0 +1,25 @@
+checkpoint,layer,position,token,cluster,harmful,harmless,pseudo_harm,pseudo_refused
+base__none,16,last_prompt,last_prompt,0,359,404,1000,19
+base__none,16,last_prompt,last_prompt,1,408,508,175,16
+base__none,16,last_prompt,last_prompt,2,1006,710,47,6
+sft__none,16,last_prompt,last_prompt,0,1012,394,27,13
+sft__none,16,last_prompt,last_prompt,1,403,357,1020,266
+sft__none,16,last_prompt,last_prompt,2,443,969,195,48
+dpo__none,16,last_prompt,last_prompt,0,429,356,1034,127
+dpo__none,16,last_prompt,last_prompt,1,420,992,189,4
+dpo__none,16,last_prompt,last_prompt,2,1017,388,27,4
+final__none,16,last_prompt,last_prompt,0,429,358,1034,129
+final__none,16,last_prompt,last_prompt,1,419,995,189,2
+final__none,16,last_prompt,last_prompt,2,1017,391,27,7
+base__none,16,pre_gen,post_instr_2 (:),0,787,18,19,7
+base__none,16,pre_gen,post_instr_2 (:),1,354,441,1018,20
+base__none,16,pre_gen,post_instr_2 (:),2,632,1163,185,14
+sft__none,16,pre_gen,post_instr_4 (\n),0,625,1431,227,30
+sft__none,16,pre_gen,post_instr_4 (\n),1,70,287,945,232
+sft__none,16,pre_gen,post_instr_4 (\n),2,1163,2,70,65
+dpo__none,16,pre_gen,post_instr_4 (\n),0,551,1205,125,4
+dpo__none,16,pre_gen,post_instr_4 (\n),1,1185,4,85,52
+dpo__none,16,pre_gen,post_instr_4 (\n),2,130,527,1040,79
+final__none,16,pre_gen,post_instr_4 (\n),0,547,1202,121,2
+final__none,16,pre_gen,post_instr_4 (\n),1,136,538,1050,86
+final__none,16,pre_gen,post_instr_4 (\n),2,1182,4,79,50

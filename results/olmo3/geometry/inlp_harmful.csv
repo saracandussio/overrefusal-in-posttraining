@@ -1,0 +1,547 @@
+checkpoint,layer,position,token,target,removed,auroc_test,cos_w_vref
+base__none,16,last_prompt,last_prompt,harmful,0,0.8352671171745506,0.1092074179698279
+base__none,16,last_prompt,last_prompt,harmful,1,0.8415572272514769,0.13044010824467625
+base__none,16,last_prompt,last_prompt,harmful,2,0.8364713049145027,0.1539476689487554
+base__none,16,last_prompt,last_prompt,harmful,3,0.8341337640075368,0.16520146668283034
+base__none,16,last_prompt,last_prompt,harmful,4,0.829161176987264,0.1757075380783397
+base__none,16,last_prompt,last_prompt,harmful,5,0.8229844022270391,0.17329276445259156
+base__none,16,last_prompt,last_prompt,harmful,6,0.8138892430617536,0.1744508001223169
+base__none,16,last_prompt,last_prompt,harmful,7,0.7801294855993314,0.1628973156968205
+base__none,16,last_prompt,last_prompt,harmful,8,0.7655517304886169,0.16768196172070457
+base__none,16,last_prompt,last_prompt,harmful,9,0.7494014478586709,0.16462762817687707
+base__none,16,last_prompt,last_prompt,harmful,10,0.7434088429880856,0.17329222350904847
+base__none,16,last_prompt,last_prompt,harmful,11,0.7172142179154802,0.16373624044120755
+base__none,16,last_prompt,last_prompt,harmful,12,0.7049315029679686,0.16427753389086627
+base__none,16,last_prompt,last_prompt,harmful,13,0.711561618994999,0.16202336825796623
+base__none,16,last_prompt,last_prompt,harmful,14,0.7074390468499865,0.15133393854851354
+base__none,16,last_prompt,last_prompt,harmful,15,0.680904415827277,0.1447932563388735
+base__none,16,last_prompt,last_prompt,harmful,16,0.6603623896751527,0.13769680976179424
+base__none,16,last_prompt,last_prompt,harmful,17,0.659399039483191,0.1246224963567327
+base__none,16,last_prompt,last_prompt,harmful,18,0.6668791703854817,0.10789677538982727
+base__none,16,last_prompt,last_prompt,harmful,19,0.6516214033745591,0.09097537261988604
+base__none,16,last_prompt,last_prompt,harmful,20,0.6501763780866165,0.07763727135986423
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,0,0.8208026973805375,0.09602549175992071
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,1,0.7640075367985606,0.13196530359387784
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,2,0.8172893025627949,0.11048729030717325
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,3,0.7267768852621588,0.10265579073082905
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,4,0.7558473939960617,0.06107835311954046
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,5,0.7049315029679686,0.047263567919165514
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,6,0.6567214926261209,0.045159988126847156
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,7,0.645402127870571,0.05998848825605857
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,8,0.6202983552212163,0.06933918077846658
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,9,0.6214033745590548,0.081597443309751
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,10,0.653222264722966,0.09781577153029537
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,11,0.5941320639777863,0.10796782533705815
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,12,0.6467338178418123,0.10172738097130558
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,13,0.6010313513819826,0.08803751465904694
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,14,0.5992604870585234,0.057259192713538576
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,15,0.6162891183929052,0.06515736415452128
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,16,0.5878844546446229,0.0693995476773263
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,17,0.6203408559649795,0.06097855140705345
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,18,0.586977772111012,0.0827709800689711
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,19,0.6189666652499752,0.08395405456090214
+base__none,16,post_instr_0,post_instr_0 (\n),harmful,20,0.56477821695213,0.0665923159618382
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,0,0.8795670590902008,0.1124279274076392
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,1,0.8751328148242594,0.14649653632615395
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,2,0.8558658109850256,0.12297989979837212
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,3,0.8256336152549337,0.10779051487757398
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,4,0.7792936376386587,0.08782626072156566
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,5,0.7438055165965406,0.0987652192996469
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,6,0.7224843101420941,0.15226554261724037
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,7,0.7013047728335244,0.18858210158494843
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,8,0.6932154646039639,0.21581523627331292
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,9,0.6825336110048593,0.22638650679793831
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,10,0.6762010001841698,0.21213620377919454
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,11,0.6813435901794949,0.20385844776067083
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,12,0.6745859719211753,0.20513061079526101
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,13,0.6665533313499652,0.1960772522350124
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,14,0.646917987731452,0.17316753582391797
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,15,0.639622026718801,0.13470404306656641
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,16,0.6286710017425305,0.1448837981867534
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,17,0.6133849009024325,0.15732284454198364
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,18,0.5882386275093148,0.1832360128051446
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,19,0.5856319152251832,0.1868183670895397
+base__none,16,post_instr_1,post_instr_1 (Assistant),harmful,20,0.5873461118902914,0.20457158200613987
+base__none,16,post_instr_2,post_instr_2 (:),harmful,0,0.9028007990139828,0.2039963301702795
+base__none,16,post_instr_2,post_instr_2 (:),harmful,1,0.9015399436156799,0.3154055125948808
+base__none,16,post_instr_2,post_instr_2 (:),harmful,2,0.9008315978862964,0.29577098907248434
+base__none,16,post_instr_2,post_instr_2 (:),harmful,3,0.8969073625455113,0.22952007675510097
+base__none,16,post_instr_2,post_instr_2 (:),harmful,4,0.8928981257172001,0.18124197535262115
+base__none,16,post_instr_2,post_instr_2 (:),harmful,5,0.8654709790754671,0.1343556675976414
+base__none,16,post_instr_2,post_instr_2 (:),harmful,6,0.8348562766515082,0.11100171142157934
+base__none,16,post_instr_2,post_instr_2 (:),harmful,7,0.7992831541218638,0.08900156180317056
+base__none,16,post_instr_2,post_instr_2 (:),harmful,8,0.776431920891949,0.10895716232107507
+base__none,16,post_instr_2,post_instr_2 (:),harmful,9,0.7446413645572131,0.10839475453193653
+base__none,16,post_instr_2,post_instr_2 (:),harmful,10,0.7157691926275377,0.11926050421833898
+base__none,16,post_instr_2,post_instr_2 (:),harmful,11,0.6952980010483517,0.10789054333150215
+base__none,16,post_instr_2,post_instr_2 (:),harmful,12,0.686174508053891,0.1069816559066165
+base__none,16,post_instr_2,post_instr_2 (:),harmful,13,0.6782552027993823,0.12036756250996819
+base__none,16,post_instr_2,post_instr_2 (:),harmful,14,0.6812160879482059,0.11344944998764835
+base__none,16,post_instr_2,post_instr_2 (:),harmful,15,0.6764843384759234,0.14436190810932079
+base__none,16,post_instr_2,post_instr_2 (:),harmful,16,0.6708600733846176,0.12567428999970123
+base__none,16,post_instr_2,post_instr_2 (:),harmful,17,0.6637341153470185,0.12488058052399495
+base__none,16,post_instr_2,post_instr_2 (:),harmful,18,0.6490288580050152,0.11029015467813841
+base__none,16,post_instr_2,post_instr_2 (:),harmful,19,0.6352869508549733,0.1033696858092783
+base__none,16,post_instr_2,post_instr_2 (:),harmful,20,0.6333319166418746,0.06036478631888789
+base__none,16,first_gen,first_gen,harmful,0,0.9377505773017695,0.21028124405538393
+base__none,16,first_gen,first_gen,harmful,1,0.9370138977432105,0.3049117568421026
+base__none,16,first_gen,first_gen,harmful,2,0.940357289585901,0.31744872857998235
+base__none,16,first_gen,first_gen,harmful,3,0.938373921543627,0.31915366681957047
+base__none,16,first_gen,first_gen,harmful,4,0.9323954835876295,0.3144225262925484
+base__none,16,first_gen,first_gen,harmful,5,0.9188377463272274,0.26945830703475654
+base__none,16,first_gen,first_gen,harmful,6,0.9031408049640869,0.21123292998090773
+base__none,16,first_gen,first_gen,harmful,7,0.8918639409522999,0.20009095253310993
+base__none,16,first_gen,first_gen,harmful,8,0.8800062334424186,0.17079273735469164
+base__none,16,first_gen,first_gen,harmful,9,0.8504115488687719,0.1630515395785759
+base__none,16,first_gen,first_gen,harmful,10,0.8403247056823494,0.1389679922223383
+base__none,16,first_gen,first_gen,harmful,11,0.8405797101449276,0.12600400504821396
+base__none,16,first_gen,first_gen,harmful,12,0.8418830662869934,0.11754461904085765
+base__none,16,first_gen,first_gen,harmful,13,0.8243727598566307,0.09869431577417871
+base__none,16,first_gen,first_gen,harmful,14,0.7946505730516951,0.07113977001782917
+base__none,16,first_gen,first_gen,harmful,15,0.7729751937325569,0.04774399248105021
+base__none,16,first_gen,first_gen,harmful,16,0.7191834190431666,0.03332926154630058
+base__none,16,first_gen,first_gen,harmful,17,0.6660716562539845,0.013345826327938686
+base__none,16,first_gen,first_gen,harmful,18,0.6243075920495276,0.00875007016651272
+base__none,16,first_gen,first_gen,harmful,19,0.6037938997265785,0.0007797566238484452
+base__none,16,first_gen,first_gen,harmful,20,0.586368594783742,-0.003178108103134127
+sft__none,16,last_prompt,last_prompt,harmful,0,0.8917268661850706,0.2502425859066457
+sft__none,16,last_prompt,last_prompt,harmful,1,0.8712160302717579,0.29126964516883547
+sft__none,16,last_prompt,last_prompt,harmful,2,0.8626805985552116,0.2827699688959109
+sft__none,16,last_prompt,last_prompt,harmful,3,0.8464267285861712,0.2632022739393816
+sft__none,16,last_prompt,last_prompt,harmful,4,0.838063295493636,0.2215698464137953
+sft__none,16,last_prompt,last_prompt,harmful,5,0.8082430340557276,0.189368039856973
+sft__none,16,last_prompt,last_prompt,harmful,6,0.7902261781905744,0.1495492109202448
+sft__none,16,last_prompt,last_prompt,harmful,7,0.7825937392500859,0.1106206070616444
+sft__none,16,last_prompt,last_prompt,harmful,8,0.7729833161334709,0.12181712964568006
+sft__none,16,last_prompt,last_prompt,harmful,9,0.7426685586515308,0.11450120349847942
+sft__none,16,last_prompt,last_prompt,harmful,10,0.7243077055383556,0.12581886827638755
+sft__none,16,last_prompt,last_prompt,harmful,11,0.7073873409012728,0.09995344714251841
+sft__none,16,last_prompt,last_prompt,harmful,12,0.6827915376676985,0.07628422079513532
+sft__none,16,last_prompt,last_prompt,harmful,13,0.6741056071551428,0.05808585217344373
+sft__none,16,last_prompt,last_prompt,harmful,14,0.6649251805985552,0.031032606241888472
+sft__none,16,last_prompt,last_prompt,harmful,15,0.6652906776745786,0.030697107448837756
+sft__none,16,last_prompt,last_prompt,harmful,16,0.6333419332645338,0.036145471464531405
+sft__none,16,last_prompt,last_prompt,harmful,17,0.6239895080839353,0.05973139166962403
+sft__none,16,last_prompt,last_prompt,harmful,18,0.5903637770897832,0.039285836595875936
+sft__none,16,last_prompt,last_prompt,harmful,19,0.6146370829033367,0.05192501484958128
+sft__none,16,last_prompt,last_prompt,harmful,20,0.5889877880976953,0.03875425211209311
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,0,0.8981123151014792,0.2443035439820002
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,1,0.9001547987616101,0.35339832825020034
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,2,0.8917913656690747,0.3891440968442727
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,3,0.8925008599931201,0.3394101843450786
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,4,0.8842019263845889,0.26006111053054964
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,5,0.8544246646026832,0.23218988001149443
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,6,0.8389877880976951,0.1772315845765408
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,7,0.8216589267285862,0.13353760189363345
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,8,0.8125644994840042,0.08003870818566246
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,9,0.7939886480908153,0.07083986620912931
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,10,0.7804652562779498,0.06538677289186895
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,11,0.7687263501891984,0.05950757808120699
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,12,0.7380030959752322,0.029352741239627823
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,13,0.6876934984520124,0.03074430210776564
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,14,0.6695261437908496,0.03894576678465921
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,15,0.6596577227382181,0.0475544828159745
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,16,0.6210225318197454,0.052776976809166466
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,17,0.5809898520811834,0.053098791702410046
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,18,0.5555125558995528,0.056215475631590635
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,19,0.5466976264189887,0.0366412860801005
+sft__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,20,0.5556200550395596,0.043977319985904005
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,0,0.9177631578947368,0.25777180233080454
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,1,0.9203861369109047,0.3839127303003361
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,2,0.9241271069831442,0.43612067858161313
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,3,0.9173976608187135,0.3577779895004487
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,4,0.9041537667698658,0.2424097308579705
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,5,0.8804609563123496,0.18935918512294084
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,6,0.8493507051943584,0.15442879901482515
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,7,0.8255718954248367,0.12889758200238197
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,8,0.8036205710354318,0.10229492098104703
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,9,0.7840127278981769,0.06799841763640374
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,10,0.7811532507739938,0.049487856017662674
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,11,0.7540634674922599,-0.026039785723234787
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,12,0.7373151014791882,-0.006933776309805391
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,13,0.6785775713794289,-0.02486742325556607
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,14,0.6570347437220503,-0.0055189307767106845
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,15,0.6334494324045408,0.02152518225184491
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,16,0.6424363605091159,0.047169421790398375
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,17,0.6416193670450636,0.04487557213310682
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,18,0.6205065359477124,0.05389430436929193
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,19,0.605671654626763,0.05689470146386252
+sft__none,16,post_instr_1,post_instr_1 (\n),harmful,20,0.5793773649810802,0.042330808318577495
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,0,0.9106897144822842,0.6524262715687633
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,1,0.8679480564155487,0.4505053634737653
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,2,0.7975361197110424,0.06887287771405277
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,3,0.7121818025455796,-0.02717790849148136
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,4,0.6187650498796009,-0.06861607817627934
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,5,0.5580710354317164,-0.04789856044259794
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,6,0.5122119023047815,-0.0029692868741943296
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,7,0.49312005503955963,-0.014568433139439606
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,8,0.5201238390092879,-0.01911856728882382
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,9,0.5278637770897833,0.020348173713791457
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,10,0.574281905744754,0.10677732482535077
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,11,0.5630374957000345,0.10754297478351697
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,12,0.5330452356381149,0.05598781163156236
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,13,0.5072669418644651,0.04434485882585952
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,14,0.5479876160990712,0.06246272934743639
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,15,0.46678276573787414,0.007849573341915035
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,16,0.4747592019263846,0.01548863139087203
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,17,0.48206914344685237,0.06672740807002796
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,18,0.5324647402820777,0.03250272096276673
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,19,0.4935070519435844,0.005495277464418253
+sft__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,20,0.5763243894048847,-0.05769406478042202
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,0,0.9313725490196078,0.23365400032026315
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,1,0.9254815961472308,0.44296849269397615
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,2,0.9258040935672515,0.431870867848917
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,3,0.9158711730306159,0.2967430730766239
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,4,0.8930813553491572,0.19490910263360786
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,5,0.863970588235294,0.1460367889320224
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,6,0.8357843137254903,0.11205384052127704
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,7,0.8109735122119024,0.07860340925913133
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,8,0.807641038871689,0.04525709905238802
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,9,0.7983531131750947,0.048587563403356196
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,10,0.7804222566219471,0.048047156907429424
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,11,0.7589439284485724,0.06743312880894019
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,12,0.753826969384245,0.09899049392843132
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,13,0.7555254557963536,0.07597585299141645
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,14,0.7441090471276228,0.06073980693997865
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,15,0.7377450980392157,0.024394017188463735
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,16,0.7354876160990713,0.016797895085413895
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,17,0.7351651186790505,0.010520534905651406
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,18,0.7288871689026488,0.005998561972229123
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,19,0.7140307877536979,0.021874828100470325
+sft__none,16,post_instr_3,post_instr_3 (assistant),harmful,20,0.6904669762641898,0.06400126722938244
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,0,0.9373280013759889,0.2976910384428949
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,1,0.938467492260062,0.4434907437052626
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,2,0.9340815273477813,0.4055783445189636
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,3,0.9183006535947713,0.35283335765037993
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,4,0.8947583419332644,0.2291865217862162
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,5,0.8762899896800826,0.17907182012456774
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,6,0.8576281389748883,0.15645219410169128
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,7,0.8499527003783971,0.10467024202760876
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,8,0.8512641898864809,0.11174126542784299
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,9,0.8482112143102856,0.08304506020217252
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,10,0.8340858273133815,0.056927697471998134
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,11,0.8113820089439285,0.07156650682145063
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,12,0.7880116959064327,0.07407591157684976
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,13,0.7675438596491229,0.06461965228000088
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,14,0.7594814241486068,0.05658700477427328
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,15,0.746173030615755,0.03040288686547173
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,16,0.7251461988304094,0.028977188475429936
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,17,0.6803620571035431,-0.022571949166172545
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,18,0.6276659786721706,-0.008083564859833796
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,19,0.5943842449260406,-0.009945164572473474
+sft__none,16,post_instr_4,post_instr_4 (\n),harmful,20,0.5835483316133472,-0.00019938400322600555
+sft__none,16,first_gen,first_gen,harmful,0,0.9521198830409356,0.31134895559494236
+sft__none,16,first_gen,first_gen,harmful,1,0.9496474028207774,0.46490984712573996
+sft__none,16,first_gen,first_gen,harmful,2,0.9548503611971104,0.46540254235197903
+sft__none,16,first_gen,first_gen,harmful,3,0.9492604059167525,0.34306058235392534
+sft__none,16,first_gen,first_gen,harmful,4,0.9426384588923288,0.30788091827990344
+sft__none,16,first_gen,first_gen,harmful,5,0.8944788441692466,0.17117719628951633
+sft__none,16,first_gen,first_gen,harmful,6,0.8915118679050568,0.12929502327716028
+sft__none,16,first_gen,first_gen,harmful,7,0.8831699346405228,0.12743125416205486
+sft__none,16,first_gen,first_gen,harmful,8,0.8669160646714826,0.10686352104206452
+sft__none,16,first_gen,first_gen,harmful,9,0.8582946336429309,0.08603387859836698
+sft__none,16,first_gen,first_gen,harmful,10,0.8402132782937737,0.05028887569742752
+sft__none,16,first_gen,first_gen,harmful,11,0.8453087375300997,0.04779011757418939
+sft__none,16,first_gen,first_gen,harmful,12,0.8310113519091848,0.03572029457718171
+sft__none,16,first_gen,first_gen,harmful,13,0.806609047127623,0.06391326428073807
+sft__none,16,first_gen,first_gen,harmful,14,0.7796912624699002,0.06441189943473362
+sft__none,16,first_gen,first_gen,harmful,15,0.7880976952184382,0.07673008632050653
+sft__none,16,first_gen,first_gen,harmful,16,0.7666623667010664,0.049079128453471996
+sft__none,16,first_gen,first_gen,harmful,17,0.7452485380116958,0.05960482345800411
+sft__none,16,first_gen,first_gen,harmful,18,0.7297471620227038,0.03717217439645692
+sft__none,16,first_gen,first_gen,harmful,19,0.7387985896112831,0.043215610939916764
+sft__none,16,first_gen,first_gen,harmful,20,0.7220502235982112,0.044806054696222154
+dpo__none,16,last_prompt,last_prompt,harmful,0,0.8696933962264152,0.2296083088107852
+dpo__none,16,last_prompt,last_prompt,harmful,1,0.8607450055493896,0.27339195800280897
+dpo__none,16,last_prompt,last_prompt,harmful,2,0.8635023584905659,0.3009144766543088
+dpo__none,16,last_prompt,last_prompt,harmful,3,0.8608837402885683,0.30412755954416165
+dpo__none,16,last_prompt,last_prompt,harmful,4,0.84824153718091,0.2572763697018847
+dpo__none,16,last_prompt,last_prompt,harmful,5,0.8403683407325193,0.21872942628290545
+dpo__none,16,last_prompt,last_prompt,harmful,6,0.8311077968923418,0.17760579436886348
+dpo__none,16,last_prompt,last_prompt,harmful,7,0.8098466981132075,0.13765954454790363
+dpo__none,16,last_prompt,last_prompt,harmful,8,0.7858802719200888,0.11952340465557562
+dpo__none,16,last_prompt,last_prompt,harmful,9,0.7693014705882353,0.11856191860196685
+dpo__none,16,last_prompt,last_prompt,harmful,10,0.7396122364039955,0.09315588896821195
+dpo__none,16,last_prompt,last_prompt,harmful,11,0.7199812708102109,0.10166631932636434
+dpo__none,16,last_prompt,last_prompt,harmful,12,0.718541897891232,0.09906286112046203
+dpo__none,16,last_prompt,last_prompt,harmful,13,0.7034718368479467,0.0703486941672333
+dpo__none,16,last_prompt,last_prompt,harmful,14,0.6951130688124306,0.08263173965153445
+dpo__none,16,last_prompt,last_prompt,harmful,15,0.6668632075471699,0.04787358379843069
+dpo__none,16,last_prompt,last_prompt,harmful,16,0.6519839067702552,0.04493943043533289
+dpo__none,16,last_prompt,last_prompt,harmful,17,0.6358906770255272,0.02203613528762089
+dpo__none,16,last_prompt,last_prompt,harmful,18,0.634694089900111,0.04070685463389694
+dpo__none,16,last_prompt,last_prompt,harmful,19,0.6205258046614872,0.04458993655709466
+dpo__none,16,last_prompt,last_prompt,harmful,20,0.601328385127636,0.060879037210776456
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,0,0.9030070754716982,0.21018379444290933
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,1,0.904394422863485,0.3311337532452423
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,2,0.9066315205327413,0.38724949843607553
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,3,0.8981166759156494,0.3650338291598142
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,4,0.8888908157602663,0.31191454341720987
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,5,0.8823876248612652,0.2549773615109345
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,6,0.8704564372918979,0.21444494499387443
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,7,0.8489872364039956,0.17733091383157287
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,8,0.8368652885682575,0.11233260557172388
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,9,0.8275180355160932,0.06554918290818311
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,10,0.8149105160932297,0.024764788854126613
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,11,0.7978288013318536,0.018256720207828016
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,12,0.7873716703662597,0.02925554741743623
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,13,0.7686251387347391,0.025953787521743637
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,14,0.732935627081021,0.031799950174607655
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,15,0.6912805216426192,0.03817774658533213
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,16,0.6630306603773585,0.04177326466505353
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,17,0.6365670088790233,0.041481905960989496
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,18,0.6168840177580467,0.04992979527601322
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,19,0.60514359045505,0.04634220056982862
+dpo__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,20,0.5890503607103219,0.050769905645879417
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,0,0.9104467258601554,0.1823122072228039
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,1,0.9144873751387347,0.32608981547174454
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,2,0.9170539678135404,0.39427091372657136
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,3,0.9169672586015539,0.38093409899125924
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,4,0.9087125416204217,0.29286635551918944
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,5,0.8978565482796893,0.26339540110601517
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,6,0.8789712819089901,0.1902645048836177
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,7,0.86757769145394,0.14701261559466136
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,8,0.8770636792452831,0.1393696707357386
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,9,0.8677511098779135,0.08590134529847135
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,10,0.8606756381798002,0.07716442235995159
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,11,0.8277434794672585,0.03937706508174669
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,12,0.802753884572697,0.010443327336288779
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,13,0.778770116537181,-0.011973380591954973
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,14,0.7475894839067703,-0.04749656024816702
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,15,0.7215940621531632,-0.03410962765881686
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,16,0.7079633740288569,-0.016955237032100206
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,17,0.6967085183129856,-0.005634192038593729
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,18,0.6852108768035516,-0.003012733539308988
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,19,0.6591287458379579,-0.015508021650168246
+dpo__none,16,post_instr_1,post_instr_1 (\n),harmful,20,0.636809794672586,0.007174491633023645
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,0,0.9163949778024417,0.618974046288042
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,1,0.8950991953385128,0.47318659188142004
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,2,0.8250034683684794,0.08415875555371292
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,3,0.7439476970033296,0.01571910783626343
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,4,0.6686147336293008,0.02765916591277338
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,5,0.623040371809101,-0.0306374157950896
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,6,0.6165545227524972,-0.012908393518494812
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,7,0.5881139012208656,0.014980689193042535
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,8,0.5182436182019978,-0.014683355262314153
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,9,0.5140815760266371,0.04679952879198176
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,10,0.5421233351831298,0.12475019483236305
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,11,0.5731478912319645,0.1403486320256303
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,12,0.5689858490566038,0.08109075714422764
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,13,0.5442390399556049,0.07973707828090108
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,14,0.5400769977802442,0.06987065142293739
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,15,0.5227698390677025,0.06588631007328856
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,16,0.5400943396226415,0.04933379994522542
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,17,0.5251803551609323,0.03101429348183581
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,18,0.49960113762486125,0.024494655244578428
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,19,0.5166655105438401,0.07031388726219123
+dpo__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,20,0.49889012208657046,-0.043237665706446354
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,0,0.9209038568257493,0.20309480644083397
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,1,0.9255514705882352,0.39003846729620645
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,2,0.9179210599334073,0.40587782066750844
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,3,0.9088339345172032,0.3200997834267134
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,4,0.8999549112097669,0.20997389349266143
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,5,0.8819367369589345,0.18025693308920204
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,6,0.8654446448390678,0.14099208855928633
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,7,0.8537042175360711,0.13840574633967592
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,8,0.8378364317425084,0.12638998832706766
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,9,0.8133150665926748,0.098516085834803
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,10,0.7906666204217536,0.08872660598507602
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,11,0.7822731687014428,0.08676192458237413
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,12,0.7680528579356272,0.08327307625780465
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,13,0.7477282186459488,0.07792773865143271
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,14,0.7377740011098779,0.04786413921753886
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,15,0.7280799112097669,0.01797642226395616
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,16,0.7137555493895671,-0.005928966313796895
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,17,0.6945754716981132,0.00398510890640784
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,18,0.6852629023307437,0.022127412500300835
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,19,0.6753780521642619,0.03338427092663083
+dpo__none,16,post_instr_3,post_instr_3 (assistant),harmful,20,0.6618340732519423,0.04957816686012799
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,0,0.9165683962264152,0.21716142155205537
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,1,0.9236958934517202,0.38991517667622366
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,2,0.9161001664816869,0.37121252040057773
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,3,0.9141578801331853,0.33700316818974246
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,4,0.9077587402885683,0.27100791745949426
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,5,0.8893070199778024,0.17467729035896407
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,6,0.8677857935627081,0.15511512077351564
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,7,0.8476519145394006,0.13418160353466518
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,8,0.8284198113207548,0.1281558856965188
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,9,0.805736681465039,0.1021242795689387
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,10,0.7976553829078802,0.09804035631192162
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,11,0.7890885127635959,0.1010586736185328
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,12,0.7789088512763596,0.09120057647432273
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,13,0.7621392896781354,0.1096776748708485
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,14,0.7384850166481687,0.11891740256995113
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,15,0.7125936459489456,0.1452206114940734
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,16,0.6992404273029967,0.12457636356300796
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,17,0.6844825194228634,0.11127399213362718
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,18,0.6769908435072143,0.08675671258120227
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,19,0.6668632075471699,0.056385814727350186
+dpo__none,16,post_instr_4,post_instr_4 (\n),harmful,20,0.6618340732519423,0.025094642353100643
+dpo__none,16,first_gen,first_gen,harmful,0,0.937656076581576,0.17132697568323732
+dpo__none,16,first_gen,first_gen,harmful,1,0.9356097391786903,0.33475707199945837
+dpo__none,16,first_gen,first_gen,harmful,2,0.9346906215316315,0.3764170354542218
+dpo__none,16,first_gen,first_gen,harmful,3,0.9334073251942288,0.3630987976779367
+dpo__none,16,first_gen,first_gen,harmful,4,0.9286209766925637,0.3077939125645248
+dpo__none,16,first_gen,first_gen,harmful,5,0.9090940621531631,0.25973111188541625
+dpo__none,16,first_gen,first_gen,harmful,6,0.8892376526082131,0.22938507688733703
+dpo__none,16,first_gen,first_gen,harmful,7,0.8548487791342952,0.19001634607247705
+dpo__none,16,first_gen,first_gen,harmful,8,0.8206853496115427,0.19664060893671284
+dpo__none,16,first_gen,first_gen,harmful,9,0.7991120976692565,0.17161957702924158
+dpo__none,16,first_gen,first_gen,harmful,10,0.7590004162042177,0.14462365869260135
+dpo__none,16,first_gen,first_gen,harmful,11,0.7305424528301887,0.16056262045812586
+dpo__none,16,first_gen,first_gen,harmful,12,0.7054661487236404,0.13422131002543103
+dpo__none,16,first_gen,first_gen,harmful,13,0.680684655937847,0.10769994006299267
+dpo__none,16,first_gen,first_gen,harmful,14,0.6665337125416203,0.07297008670655364
+dpo__none,16,first_gen,first_gen,harmful,15,0.6742508324084351,0.048442170180331236
+dpo__none,16,first_gen,first_gen,harmful,16,0.6701061320754718,0.039222001768141945
+dpo__none,16,first_gen,first_gen,harmful,17,0.6424979189789124,0.02231413804886207
+dpo__none,16,first_gen,first_gen,harmful,18,0.636341564927858,0.026837532577515887
+dpo__none,16,first_gen,first_gen,harmful,19,0.6133636237513873,0.02751771871550447
+dpo__none,16,first_gen,first_gen,harmful,20,0.6177164261931187,0.03529812148943274
+final__none,16,last_prompt,last_prompt,harmful,0,0.8616701287910262,0.20190374524130597
+final__none,16,last_prompt,last_prompt,harmful,1,0.8662567511425011,0.2756374930597102
+final__none,16,last_prompt,last_prompt,harmful,2,0.8702617366015788,0.31001296906533227
+final__none,16,last_prompt,last_prompt,harmful,3,0.8562193601994184,0.3120538498799016
+final__none,16,last_prompt,last_prompt,harmful,4,0.8304611549646863,0.2807412805761312
+final__none,16,last_prompt,last_prompt,harmful,5,0.8215205650186954,0.2244164339890718
+final__none,16,last_prompt,last_prompt,harmful,6,0.8035895305359368,0.17705359771423934
+final__none,16,last_prompt,last_prompt,harmful,7,0.7767345243041129,0.1270195380796326
+final__none,16,last_prompt,last_prompt,harmful,8,0.7565932696302451,0.15761336947295584
+final__none,16,last_prompt,last_prompt,harmful,9,0.7263647694225176,0.09922665290051473
+final__none,16,last_prompt,last_prompt,harmful,10,0.7050602409638554,0.09846359193957507
+final__none,16,last_prompt,last_prompt,harmful,11,0.6666057332779394,0.09455480278138546
+final__none,16,last_prompt,last_prompt,harmful,12,0.6374906522642294,0.08054966966763945
+final__none,16,last_prompt,last_prompt,harmful,13,0.6394017449106772,0.06997544934598522
+final__none,16,last_prompt,last_prompt,harmful,14,0.6099542999584546,0.06099591826293531
+final__none,16,last_prompt,last_prompt,harmful,15,0.6037557125051931,0.04940772578213135
+final__none,16,last_prompt,last_prompt,harmful,16,0.5837474034067304,0.031897727233848164
+final__none,16,last_prompt,last_prompt,harmful,17,0.5693228084752804,0.03239769107212251
+final__none,16,last_prompt,last_prompt,harmful,18,0.5769007062733693,0.02720305561437612
+final__none,16,last_prompt,last_prompt,harmful,19,0.5726796842542585,0.008534255480554613
+final__none,16,last_prompt,last_prompt,harmful,20,0.5593518903199004,0.019791783503099854
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,0,0.8898878271707521,0.18589382807474594
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,1,0.9088159534690485,0.3039574218559117
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,2,0.9023016202742004,0.36159349789946454
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,3,0.8961196510178646,0.37392262041547103
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,4,0.8816950560864147,0.31256126102628884
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,5,0.8613377648525136,0.2735465731626266
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,6,0.8361279601163274,0.22225886069464107
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,7,0.8227336933942667,0.1760085932734705
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,8,0.8025758205234732,0.13566040047754443
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,9,0.7821852928957207,0.09810850633042288
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,10,0.7560947237224762,0.06039807315932348
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,11,0.7336435396759452,0.022096261874873672
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,12,0.7228417116742833,0.009077840670648495
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,13,0.6926464478604072,-0.003632578221236853
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,14,0.6731200664727877,0.0059346532926852595
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,15,0.6361113419194019,-0.0010711024715752237
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,16,0.5718986289987537,0.01670445972859795
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,17,0.5431159119235563,0.014841837071954488
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,18,0.5323805567095969,0.012480935670594702
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,19,0.5259326963024512,0.018205834879159225
+final__none,16,post_instr_0,post_instr_0 (<|im_end|>),harmful,20,0.5207810552555048,0.022212687634455917
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,0,0.9133859576235979,0.20647002035909653
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,1,0.919634399667636,0.35133813659702784
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,2,0.9249522226838388,0.4201790386652141
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,3,0.9213626921479019,0.33175778065687817
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,4,0.9154299958454509,0.2954329143059184
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,5,0.9000415454923142,0.22324868101153963
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,6,0.8829580390527629,0.19776061552760257
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,7,0.865808059825509,0.15172727290644067
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,8,0.8316742833402576,0.08748977135441012
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,9,0.8080265891150811,0.06167892587030599
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,10,0.7807062733693395,0.03421179450541929
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,11,0.7547154133776486,0.013589109863103806
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,12,0.7358703780639801,0.007701351307919003
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,13,0.7120398836726216,-0.00029200553538566686
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,14,0.6966680515164105,-0.012048945305732583
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,15,0.6924968840880764,-0.011070321116372739
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,16,0.6585292895720813,-0.010067253528374561
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,17,0.6519817199833817,0.023787273502189222
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,18,0.6253427503115913,0.051624814257407246
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,19,0.6102700457000415,0.024534218050818013
+final__none,16,post_instr_1,post_instr_1 (\n),harmful,20,0.6317075197341088,0.059341316053237426
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,0,0.9094972995429995,0.5963166001548088
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,1,0.8654756958869964,0.46617938537695736
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,2,0.760631491483174,0.05680093916008204
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,3,0.6643456584960531,0.030695052512879947
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,4,0.5927212297465726,0.009925863789966663
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,5,0.5818529289572081,-0.014783525083263636
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,6,0.5521229746572498,-0.016197352934535333
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,7,0.5355546323223931,-0.007901927008884525
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,8,0.5203323639385127,-0.006385613016848046
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,9,0.5143830494391359,0.03839615889883116
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,10,0.5395429995845451,0.10159827038746476
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,11,0.5658329871208974,0.16492060826310853
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,12,0.5646530951391774,0.12901826427788513
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,13,0.5463730785209805,0.06270030901891387
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,14,0.5410718737017034,0.06588598075371846
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,15,0.5200166181969257,0.06686683995084415
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,16,0.4937100124636477,0.01681606990237303
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,17,0.4691981719983382,-0.05020003061664823
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,18,0.5435978396343997,0.052541387950524016
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,19,0.5337931034482759,0.10435774392496813
+final__none,16,post_instr_2,post_instr_2 (<|im_start|>),harmful,20,0.516825924387204,0.04754422268026993
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,0,0.9207145824678022,0.21185830644551296
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,1,0.9287577897798089,0.40609471081424936
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,2,0.929206481096801,0.38038999711892535
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,3,0.9196842542584129,0.30417677551289507
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,4,0.901038637307852,0.20809452485720992
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,5,0.8632488574989613,0.16397609957880455
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,6,0.8314914831740756,0.1457390640282795
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,7,0.8037889488990444,0.10742302255639233
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,8,0.7925550477773162,0.10476929509543977
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,9,0.7789945990859992,0.07110367631335764
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,10,0.7749896136269214,0.07874371757557999
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,11,0.7713668466971333,0.0849221219544369
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,12,0.7627420024927296,0.07020221357873413
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,13,0.7460905691732447,0.041847592818580616
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,14,0.7345409223099294,0.022932467676615775
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,15,0.7210968009970918,0.008974089559749229
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,16,0.7023847112588284,0.006782511747527405
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,17,0.692430411300374,0.04117118981024632
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,18,0.6768425425841296,0.05507814844169987
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,19,0.665941005400914,0.07718784907400682
+final__none,16,post_instr_3,post_instr_3 (assistant),harmful,20,0.6616535105941006,0.07172229987117469
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,0,0.9254175321977566,0.23899322852783703
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,1,0.9225259659326963,0.41238152228054675
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,2,0.9172746157041961,0.3559073507137338
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,3,0.9081678437889491,0.2814167095207721
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,4,0.8882924802658911,0.2354395633241966
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,5,0.8641462401329456,0.13512054423989897
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,6,0.8345990859991691,0.11792617034363644
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,7,0.8252098047361861,0.15425947780442542
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,8,0.801994183631076,0.13647901672623103
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,9,0.7957125051931866,0.13654090978026104
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,10,0.7881346073950977,0.14084442379058537
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,11,0.7834815122559202,0.13263366626396308
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,12,0.7728458662235147,0.13442846918706308
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,13,0.7628250934773577,0.13999252951136038
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,14,0.7605650186954716,0.13155047320092542
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,15,0.7296385542168674,0.12858145956089762
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,16,0.7008226007478189,0.1230978262921749
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,17,0.6781553801412546,0.10037632003061493
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,18,0.66176983797258,0.09589037011067689
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,19,0.6477274615704196,0.07655158814150134
+final__none,16,post_instr_4,post_instr_4 (\n),harmful,20,0.6205068550062318,0.02757210709535741
+final__none,16,first_gen,first_gen,harmful,0,0.9339260490236809,0.18031428460105978
+final__none,16,first_gen,first_gen,harmful,1,0.9352222683838803,0.3643199495702086
+final__none,16,first_gen,first_gen,harmful,2,0.9360365600332363,0.40487637789921693
+final__none,16,first_gen,first_gen,harmful,3,0.9334607395097633,0.3335227924099932
+final__none,16,first_gen,first_gen,harmful,4,0.9175737432488575,0.2738168852942828
+final__none,16,first_gen,first_gen,harmful,5,0.8856668051516411,0.20039040045326958
+final__none,16,first_gen,first_gen,harmful,6,0.8346655587868715,0.2060069257464215
+final__none,16,first_gen,first_gen,harmful,7,0.7922559202326548,0.2033071802373398
+final__none,16,first_gen,first_gen,harmful,8,0.7864063149148318,0.20611440763058533
+final__none,16,first_gen,first_gen,harmful,9,0.7696551724137931,0.17837357655904146
+final__none,16,first_gen,first_gen,harmful,10,0.7535853759867054,0.13893328283540357
+final__none,16,first_gen,first_gen,harmful,11,0.740407145824678,0.12680789256461172
+final__none,16,first_gen,first_gen,harmful,12,0.7447777316161196,0.12199918252483556
+final__none,16,first_gen,first_gen,harmful,13,0.7525051931865393,0.11506260473442237
+final__none,16,first_gen,first_gen,harmful,14,0.7455587868716244,0.10415355755251356
+final__none,16,first_gen,first_gen,harmful,15,0.7353385957623598,0.08255352134497099
+final__none,16,first_gen,first_gen,harmful,16,0.7187702534275031,0.059283167105444984
+final__none,16,first_gen,first_gen,harmful,17,0.7085002077274616,0.04365942957735858
+final__none,16,first_gen,first_gen,harmful,18,0.6877274615704196,0.010987178467564543
+final__none,16,first_gen,first_gen,harmful,19,0.691832156211051,0.050438585858558774
+final__none,16,first_gen,first_gen,harmful,20,0.6641628583298713,0.06263197346801205
