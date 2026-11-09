@@ -1,0 +1,105 @@
+"""Distances of every prompt to the harmless and harmful centroids, per cell.
+
+For each checkpoint, layer and position, runs centroids.measure_frame (see
+src/overrefusal/centroids.py for the definitions) and writes, under
+results/<family>/centroids/:
+
+  distances_<checkpoint>.parquet  one row per prompt x layer x position:
+      metadata (prompt, source, category, label, group), the judge's
+      behaviour (refused, response_type; NaN if incoherent or unjudged),
+      and d_harmless, d_harmful, z_harmless, z_harmful, closer_to, out_of_fold
+  summary_<checkpoint>.csv        one row per layer x position: separation of
+      the two centroids and the spread of each reference group
+  summary.csv                     all checkpoints' summaries together
+
+Reference groups are defined by labels, so prompts are kept whether or not
+the judge scored them; behaviour is attached, never used to select rows.
+
+A checkpoint whose parquet already exists is skipped (rerun resumes);
+--overwrite recomputes it. Activations are loaded one layer at a time.
+
+    python scripts/centroid_distances.py --family olmo2
+    python scripts/centroid_distances.py --family olmo3 --checkpoints sft__none dpo__none --layers 16
+"""
+import logging
+import os
+
+import pandas as pd
+
+from overrefusal import activations, centroids, cli, config, refusal
+from overrefusal.io import save_atomic
+
+log = logging.getLogger(__name__)
+META = ["prompt", "source", "category", "label", "group"]
+
+
+def behaviour(family: str) -> pd.DataFrame:
+    """Judge columns per (checkpoint, source, prompt), with refused and response_type."""
+    raw = pd.read_csv(config.raw_results_csv(family))
+    cols = refusal.KEY + [c for c in ["judge_ga", "judge_pd", "is_coherent"] if c in raw]
+    raw = raw[cols].drop_duplicates(refusal.KEY)
+    raw["refused"] = refusal.judge_refusal(raw)
+    raw["response_type"] = refusal.response_type(raw)
+    return raw[refusal.KEY + ["refused", "response_type"]]
+
+
+def save_parquet(df: pd.DataFrame, path) -> None:
+    tmp = path.with_suffix(path.suffix + f".tmp{os.getpid()}")
+    df.to_parquet(tmp, index=False)
+    os.replace(tmp, path)
+
+
+def run_checkpoint(family, ckpt, layers, positions, judged, folds, seed):
+    stage = config.stage_of(ckpt)
+    rows, summaries = [], []
+    for layer in layers:
+        df = activations.load(family, [layer], positions, [ckpt])
+        df = df.merge(judged, on=refusal.KEY, how="left", validate="many_to_one")
+        for pos in activations.expand(df, layer, positions):
+            per_row, summary = centroids.measure_frame(df, activations.col(layer, pos),
+                                                       folds=folds, seed=seed)
+            cell = {"checkpoint": ckpt, "layer": layer, "position": pos,
+                    "position_label": config.position_label(family, pos, stage)}
+            out = df.loc[per_row.index, [c for c in META if c != "group"]
+                         + ["refused", "response_type"]].join(per_row)
+            rows.append(out.assign(**cell))
+            summaries.append({**cell, **summary})
+            log.info("%s L%d %-14s separation %.3f  harmless sd %.3f  harmful sd %.3f",
+                     ckpt, layer, pos, summary["separation"],
+                     summary["harmless_sd"], summary["harmful_sd"])
+        del df
+    return pd.concat(rows, ignore_index=True), pd.DataFrame(summaries)
+
+
+def main():
+    p = cli.parser(__doc__, activations=True)
+    p.set_defaults(positions=["last_prompt", "post_instr", "pre_gen", "first_gen"])
+    p.add_argument("--folds", type=int, default=5)
+    p.add_argument("--seed", type=int, default=0)
+    p.add_argument("--overwrite", action="store_true")
+    args = p.parse_args()
+
+    out_dir = config.results_dir(args.family) / "centroids"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    judged = behaviour(args.family)
+
+    for ckpt in args.checkpoints:
+        dist_path = out_dir / f"distances_{ckpt}.parquet"
+        if dist_path.exists() and not args.overwrite:
+            log.info("%s: already done, skipping (--overwrite to redo)", ckpt)
+            continue
+        dist, summary = run_checkpoint(args.family, ckpt, args.layers, args.positions,
+                                       judged, args.folds, args.seed)
+        n_unjudged = int(dist.drop_duplicates(["prompt", "source"]).refused.isna().sum())
+        log.info("%s: %d prompts without a usable judgement (kept: groups come from labels)",
+                 ckpt, n_unjudged)
+        save_parquet(dist, dist_path)
+        save_atomic(summary, out_dir / f"summary_{ckpt}.csv")
+
+    parts = [pd.read_csv(f) for f in sorted(out_dir.glob("summary_*__*.csv"))]
+    if parts:
+        save_atomic(pd.concat(parts, ignore_index=True), out_dir / "summary.csv")
+
+
+if __name__ == "__main__":
+    main()
