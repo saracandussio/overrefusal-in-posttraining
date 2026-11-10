@@ -140,14 +140,19 @@ def test_position_labels_match_template_length():
     assert config.position_label("olmo2", "first_gen") == "first_gen"
 
 
-def test_response_types_refine_refused():
-    df = pd.DataFrame({"judge_ga": [3, 1, 3, 0, np.nan], "judge_pd": [0, 0, 1, 1, np.nan],
-                       "is_coherent": [True, True, True, True, False]})
+def test_response_types_partition_scored_rows():
+    df = pd.DataFrame({"judge_ga":    [0, 0, 1, 1, 2, 3, 3, np.nan],
+                       "judge_pd":    [0, 1, 0, 1, 1, 1, 0, np.nan],
+                       "is_coherent": [True] * 7 + [False]})
     types = refusal.response_type(df).tolist()
-    assert types[:4] == ["full answer", "partial answer", "answer with distancing", "hard refusal"]
-    assert pd.isna(types[4])
-    # everything but "full answer" counts as refused
-    assert refusal.judge_refusal(df).tolist()[:4] == [0, 1, 1, 1]
+    assert types[:7] == ["refusal", "refusal", "weak answer", "weak answer",
+                         "answer with distancing", "answer with distancing", "full answer"]
+    assert pd.isna(types[7])
+    assert refusal.hard_refusal(df).tolist()[:7] == [1, 1, 0, 0, 0, 0, 0]
+    assert pd.isna(refusal.hard_refusal(df).iloc[7])
+    assert refusal.ga_pd_pair(df).tolist()[:2] == ["GA0/PD0", "GA0/PD1"]
+    # the old broad definition still counts an answer with a disclaimer as refused
+    assert refusal.judge_refusal(df).tolist()[:7] == [1, 1, 1, 1, 1, 1, 0]
 
 
 def test_base_gets_the_dialogue_frame_and_is_cut():
