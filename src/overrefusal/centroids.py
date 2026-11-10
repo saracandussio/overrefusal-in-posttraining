@@ -30,8 +30,18 @@ without the fold being measured, so no prompt contributes to the centroid it
 is compared with (in-sample distances to one's own centroid are biased low).
 
 Note: with two centroids, "closer to harmful than to harmless" is decided by
-one hyperplane. The distances themselves are not projections on that axis:
-they also count everything off it.
+one hyperplane, i.e. it is a linear (one-direction) comparison. The two
+distances together add one number (how far from both groups), nothing more.
+
+5. Neighbours, the non-linear counterpart (`neighbours`). For every prompt,
+   its k nearest reference prompts in the same standardised space, and how
+   many are harmful. No axis, no hyperplane: the boundary between the
+   harmless and the harmful region can take any shape. The share is
+   balanced for group size: knn_k = 0.5 means the neighbourhood is as
+   harmful as the reference set as a whole, 1 all harmful, 0 all harmless.
+   Several k at once, as a robustness check. In thousands of dimensions
+   distances concentrate; the optional PCA (fitted on reference prompts
+   only) is the second check: conclusions should not depend on it.
 """
 from __future__ import annotations
 
@@ -39,11 +49,13 @@ from dataclasses import dataclass
 
 import numpy as np
 import pandas as pd
+from sklearn.decomposition import PCA
 from sklearn.model_selection import StratifiedKFold
 
 from overrefusal import activations
 
 REFERENCE = ("harmless", "harmful")
+KNN_KS = (10, 20, 50)
 STD_FLOOR = 1e-3  # times the median std: dimensions below it are not amplified
 
 
@@ -144,3 +156,69 @@ def measure_frame(df: pd.DataFrame, column: str, folds: int = 5, seed: int = 0
     per_row.insert(0, "group", df.loc[rows, "group"])
     summary["n_missing"] = int((~rows).sum())
     return per_row, summary
+
+
+def _harmful_share(Q: np.ndarray, R: np.ndarray, r_groups: np.ndarray, ks) -> dict[int, np.ndarray]:
+    """Balanced share of harmful prompts among the k nearest rows of R, for each row of Q."""
+    kmax = max(ks)
+    if kmax > len(R):
+        raise ValueError(f"k = {kmax} but only {len(R)} reference prompts")
+    is_harmful = r_groups == "harmful"
+    n_h, n_s = is_harmful.sum(), (~is_harmful).sum()
+    r_sq = (R ** 2).sum(1)
+    out = {k: np.empty(len(Q)) for k in ks}
+    for start in range(0, len(Q), 1024):  # bounded memory
+        q = Q[start:start + 1024]
+        d = (q ** 2).sum(1)[:, None] - 2 * q @ R.T + r_sq[None, :]
+        idx = np.argpartition(d, kmax - 1, axis=1)[:, :kmax]
+        idx = np.take_along_axis(idx, np.take_along_axis(d, idx, 1).argsort(1), 1)
+        hit = is_harmful[idx]
+        for k in ks:
+            h = hit[:, :k].sum(1) / n_h
+            s_ = (k - hit[:, :k].sum(1)) / n_s
+            out[k][start:start + 1024] = h / (h + s_)
+    return out
+
+
+def _space(X_ref: np.ndarray, g_ref: np.ndarray, pca: int | None):
+    """Standardise (and optionally reduce) with statistics of the reference rows only."""
+    ref = fit_reference(X_ref, g_ref)
+    if pca is None:
+        return lambda X: ref.standardise(X).astype(np.float32)
+    proj = PCA(n_components=pca, random_state=0).fit(ref.standardise(X_ref))
+    return lambda X: proj.transform(ref.standardise(X)).astype(np.float32)
+
+
+def neighbours(X: np.ndarray, groups: np.ndarray, ks=KNN_KS, pca: int | None = None,
+               folds: int = 5, seed: int = 0) -> pd.DataFrame:
+    """knn_<k> for every row of X: balanced harmful share among its k nearest
+    reference prompts. Reference rows are scored out of fold, with the same
+    folds as `measure` (so a prompt is never its own neighbour), every other
+    row against all reference prompts."""
+    groups = np.asarray(groups)
+    is_ref = np.isin(groups, REFERENCE)
+    out = {k: np.full(len(X), np.nan) for k in ks}
+
+    ref_idx = np.flatnonzero(is_ref)
+    splitter = StratifiedKFold(n_splits=folds, shuffle=True, random_state=seed)
+    for train, test in splitter.split(ref_idx, groups[ref_idx]):
+        tr, te = ref_idx[train], ref_idx[test]
+        f = _space(X[tr], groups[tr], pca)
+        for k, v in _harmful_share(f(X[te]), f(X[tr]), groups[tr], ks).items():
+            out[k][te] = v
+
+    if (~is_ref).any():
+        f = _space(X[is_ref], groups[is_ref], pca)
+        for k, v in _harmful_share(f(X[~is_ref]), f(X[is_ref]), groups[is_ref], ks).items():
+            out[k][~is_ref] = v
+    return pd.DataFrame({f"knn_{k}": v for k, v in out.items()})
+
+
+def neighbours_frame(df: pd.DataFrame, column: str, ks=KNN_KS, pca: int | None = None,
+                     folds: int = 5, seed: int = 0) -> pd.DataFrame:
+    """`neighbours` on one activation column; keeps the frame's index."""
+    rows = activations.has(df, column)
+    out = neighbours(activations.matrix(df, column), df.loc[rows, "group"].to_numpy(),
+                     ks=ks, pca=pca, folds=folds, seed=seed)
+    out.index = df.index[rows]
+    return out

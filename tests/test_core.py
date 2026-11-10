@@ -238,3 +238,44 @@ def test_measure_frame_keeps_index_and_skips_missing():
     assert 103 not in per_row.index and len(per_row) == 59
     assert summary["n_missing"] == 1
     assert (per_row.group == df.loc[per_row.index, "group"]).all()
+
+
+def test_neighbours_see_a_boundary_a_hyperplane_cannot():
+    """Harmful on both sides of the harmless cloud: the two centroids nearly
+    coincide, so the linear comparison is at chance, neighbours are not."""
+    rng = np.random.default_rng(0)
+    d = 4  # the bimodal harmful group inflates dim 0's within-group std,
+           # so keep few noise dimensions for the structure to stay visible
+    harmless = rng.normal(0, 1, (300, d))
+    harmful = rng.normal(0, 1, (300, d))
+    harmful[:150, 0] += 8
+    harmful[150:, 0] -= 8
+    X = np.vstack([harmless, harmful])
+    groups = np.array(["harmless"] * 300 + ["harmful"] * 300)
+    per_row, _ = centroids.measure(X, groups)
+    linear = (per_row.closer_to.to_numpy() == groups).mean()
+    knn = centroids.neighbours(X, groups)
+    nonlinear = ((knn.knn_20.to_numpy() > 0.5) == (groups == "harmful")).mean()
+    assert nonlinear > 0.95 and nonlinear > linear + 0.2
+
+
+def test_neighbours_are_balanced_and_never_include_self():
+    rng = np.random.default_rng(0)
+    harmless = rng.normal(0, 1, (400, 5))
+    harmful = rng.normal(0, 1, (100, 5))            # same cloud, 4x fewer
+    lone = np.full((1, 5), 50.0)                     # a harmful point far from all
+    X = np.vstack([harmless, harmful, lone])
+    groups = np.array(["harmless"] * 400 + ["harmful"] * 101)
+    knn = centroids.neighbours(X, groups, ks=(50,))
+    # indistinguishable groups: balanced share near 0.5, not near 0.2
+    assert knn.knn_50[:500].mean() == pytest.approx(0.5, abs=0.05)
+    # the lone point's neighbours are mostly harmless + harmful by base rate,
+    # and it is not counted as its own neighbour
+    assert knn.knn_50.iloc[-1] < 0.9
+
+
+def test_neighbours_with_pca_agree_with_full_space():
+    X, groups = outlier_clouds()
+    full = centroids.neighbours(X, groups).knn_20
+    reduced = centroids.neighbours(X, groups, pca=10).knn_20
+    assert np.corrcoef(full, reduced)[0, 1] > 0.8
