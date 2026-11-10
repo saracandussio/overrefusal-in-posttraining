@@ -7,3 +7,4 @@ slurm_outputs/
 figures/
 src/*.egg-info/
 .vllmenv/
+*.patch
