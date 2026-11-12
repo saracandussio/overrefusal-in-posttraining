@@ -308,3 +308,15 @@ def test_neighbours_with_pca_agree_with_full_space():
     full = centroids.neighbours(X, groups).knn_20
     reduced = centroids.neighbours(X, groups, pca=10).knn_20
     assert np.corrcoef(full, reduced)[0, 1] > 0.8
+
+
+def test_per_dimension_d_is_cohens_d_and_separation_is_its_rms():
+    X, groups = outlier_clouds()          # signal of 3 sd on dimension 1 only
+    ref = centroids.fit_reference(X, groups)
+    d = ref.per_dimension_d()
+    assert d[1] == pytest.approx(3, abs=0.4)
+    assert np.abs(np.delete(d, 1)).max() < 0.5
+    assert ref.separation() == pytest.approx(np.sqrt((d ** 2).mean()), rel=1e-9)
+    _, summary = centroids.measure(X, groups)
+    assert summary["n_dims_d_over_0.8"] == 1
+    assert summary["d_abs_max"] == pytest.approx(abs(d).max())

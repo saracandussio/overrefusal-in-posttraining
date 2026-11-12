@@ -77,9 +77,15 @@ class Reference:
         return {g: np.linalg.norm(Z - mu, axis=1) / root_d for g, mu in self.centroids.items()}
 
     def separation(self) -> float:
-        """Distance between the two centroids, same units as `distances`."""
+        """Distance between the two centroids, same units as `distances`.
+        Equals the root mean square of `per_dimension_d`."""
         a, b = (self.centroids[g] for g in REFERENCE)
         return float(np.linalg.norm(a - b) / np.sqrt(len(a)))
+
+    def per_dimension_d(self) -> np.ndarray:
+        """For every dimension, (mean harmful - mean harmless) / pooled
+        within-group std: a Cohen's d per dimension."""
+        return self.centroids["harmful"] - self.centroids["harmless"]
 
 
 def fit_reference(X: np.ndarray, groups: np.ndarray) -> Reference:
@@ -106,14 +112,24 @@ def measure(X: np.ndarray, groups: np.ndarray) -> tuple[pd.DataFrame, dict]:
     Returns
       per_row  one row per row of X: d_harmless, d_harmful, z_harmless,
                z_harmful, closer_to ("harmless"/"harmful")
-      summary  separation, and for each reference group its member distance
-               mean, sd, median, q05, q95, plus counts
+      summary  separation; the distribution of |d| over dimensions (Cohen's d
+               per dimension: mean, sd, median, q90, q99, max, and how many
+               dimensions exceed 0.2, 0.5, 0.8); and for each reference group
+               its member distance mean, sd, median, q05, q95, plus counts
     """
     groups = np.asarray(groups)
     ref = fit_reference(X, groups)
     d = ref.distances(X)
 
     summary = {"separation": ref.separation(), "n_dims": int(X.shape[1])}
+    d_abs = np.abs(ref.per_dimension_d())
+    q50, q90, q99 = np.percentile(d_abs, [50, 90, 99])
+    summary |= {"d_abs_mean": float(d_abs.mean()), "d_abs_sd": float(d_abs.std(ddof=1)),
+                "d_abs_median": float(q50), "d_abs_q90": float(q90), "d_abs_q99": float(q99),
+                "d_abs_max": float(d_abs.max()),
+                "n_dims_d_over_0.2": int((d_abs > 0.2).sum()),
+                "n_dims_d_over_0.5": int((d_abs > 0.5).sum()),
+                "n_dims_d_over_0.8": int((d_abs > 0.8).sum())}
     own = {}
     for g in REFERENCE:
         member = d[g][groups == g]
