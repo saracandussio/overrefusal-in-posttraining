@@ -25,17 +25,21 @@ Per (checkpoint, layer, position) cell:
    harmless group's typical distance is as close as a typical harmless prompt.
    z_<group> = (d_<group> - mean member distance) / sd member distance.
 
-Reference prompts are measured out of fold: scaler and centroids are refitted
-without the fold being measured, so no prompt contributes to the centroid it
-is compared with (in-sample distances to one's own centroid are biased low).
+Scaler and centroids are fitted once, on all reference prompts. A reference
+prompt therefore contributes to its own centroid, which shrinks its distance
+to it by exactly a factor (1 - 1/n), n = size of its group: with about 1,700
+to 1,900 prompts per group, about 0.05%, invisible at two decimals. (Until
+Nov 2026 reference prompts were measured with 5 folds instead; that is only
+needed when groups are small.)
 
 Note: with two centroids, "closer to harmful than to harmless" is decided by
 one hyperplane, i.e. it is a linear (one-direction) comparison. The two
 distances together add one number (how far from both groups), nothing more.
 
 5. Neighbours, the non-linear counterpart (`neighbours`). For every prompt,
-   its k nearest reference prompts in the same standardised space, and how
-   many are harmful. No axis, no hyperplane: the boundary between the
+   its k nearest reference prompts in the same standardised space (a
+   reference prompt is never its own neighbour: it is removed from its own
+   candidate list), and how many are harmful. No axis, no hyperplane: the boundary between the
    harmless and the harmful region can take any shape. The share is
    balanced for group size: knn_k = 0.5 means the neighbourhood is as
    harmful as the reference set as a whole, 1 all harmful, 0 all harmless.
@@ -50,7 +54,6 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
-from sklearn.model_selection import StratifiedKFold
 
 from overrefusal import activations
 
@@ -94,35 +97,23 @@ def fit_reference(X: np.ndarray, groups: np.ndarray) -> Reference:
     return Reference(shift, scale, centroids)
 
 
-def measure(X: np.ndarray, groups: np.ndarray, folds: int = 5, seed: int = 0
-            ) -> tuple[pd.DataFrame, dict]:
+def measure(X: np.ndarray, groups: np.ndarray) -> tuple[pd.DataFrame, dict]:
     """Distances of every row to both centroids, and the spread of each group.
+
+    Scaler and centroids come from all reference rows (see the module note on
+    why including a prompt in its own centroid does not matter at our sizes).
 
     Returns
       per_row  one row per row of X: d_harmless, d_harmful, z_harmless,
-               z_harmful, closer_to ("harmless"/"harmful"), out_of_fold (bool)
+               z_harmful, closer_to ("harmless"/"harmful")
       summary  separation, and for each reference group its member distance
                mean, sd, median, q05, q95, plus counts
     """
     groups = np.asarray(groups)
-    is_ref = np.isin(groups, REFERENCE)
-    d = {g: np.full(len(X), np.nan) for g in REFERENCE}
+    ref = fit_reference(X, groups)
+    d = ref.distances(X)
 
-    # reference rows: out of fold
-    ref_idx = np.flatnonzero(is_ref)
-    splitter = StratifiedKFold(n_splits=folds, shuffle=True, random_state=seed)
-    for train, test in splitter.split(ref_idx, groups[ref_idx]):
-        ref = fit_reference(X[ref_idx[train]], groups[ref_idx[train]])
-        for g, v in ref.distances(X[ref_idx[test]]).items():
-            d[g][ref_idx[test]] = v
-
-    # everything else: one reference fitted on all reference rows
-    full = fit_reference(X, groups)
-    if (~is_ref).any():
-        for g, v in full.distances(X[~is_ref]).items():
-            d[g][~is_ref] = v
-
-    summary = {"separation": full.separation(), "n_dims": int(X.shape[1])}
+    summary = {"separation": ref.separation(), "n_dims": int(X.shape[1])}
     own = {}
     for g in REFERENCE:
         member = d[g][groups == g]
@@ -137,31 +128,31 @@ def measure(X: np.ndarray, groups: np.ndarray, folds: int = 5, seed: int = 0
         "z_harmless": (d["harmless"] - own["harmless"][0]) / own["harmless"][1],
         "z_harmful": (d["harmful"] - own["harmful"][0]) / own["harmful"][1],
         "closer_to": np.where(d["harmful"] < d["harmless"], "harmful", "harmless"),
-        "out_of_fold": is_ref,
     })
     return per_row, summary
 
 
-def measure_frame(df: pd.DataFrame, column: str, folds: int = 5, seed: int = 0
-                  ) -> tuple[pd.DataFrame, dict]:
+def measure_frame(df: pd.DataFrame, column: str) -> tuple[pd.DataFrame, dict]:
     """`measure` on one activation column of a frame from activations.load.
 
     Rows without a vector in `column` are skipped; per_row keeps the frame's
     index and its `group` column, so it joins back onto df (and its metadata).
     """
     rows = activations.has(df, column)
-    per_row, summary = measure(activations.matrix(df, column), df.loc[rows, "group"].to_numpy(),
-                               folds=folds, seed=seed)
+    per_row, summary = measure(activations.matrix(df, column), df.loc[rows, "group"].to_numpy())
     per_row.index = df.index[rows]
     per_row.insert(0, "group", df.loc[rows, "group"])
     summary["n_missing"] = int((~rows).sum())
     return per_row, summary
 
 
-def _harmful_share(Q: np.ndarray, R: np.ndarray, r_groups: np.ndarray, ks) -> dict[int, np.ndarray]:
-    """Balanced share of harmful prompts among the k nearest rows of R, for each row of Q."""
+def _harmful_share(Q: np.ndarray, R: np.ndarray, r_groups: np.ndarray, ks,
+                   self_index: np.ndarray | None = None) -> dict[int, np.ndarray]:
+    """Balanced share of harmful prompts among the k nearest rows of R, for each
+    row of Q. self_index[i] = position in R of query i itself (-1 if it is not
+    in R); that row is excluded from its own candidates."""
     kmax = max(ks)
-    if kmax > len(R):
+    if kmax > len(R) - 1:
         raise ValueError(f"k = {kmax} but only {len(R)} reference prompts")
     is_harmful = r_groups == "harmful"
     n_h, n_s = is_harmful.sum(), (~is_harmful).sum()
@@ -170,6 +161,10 @@ def _harmful_share(Q: np.ndarray, R: np.ndarray, r_groups: np.ndarray, ks) -> di
     for start in range(0, len(Q), 1024):  # bounded memory
         q = Q[start:start + 1024]
         d = (q ** 2).sum(1)[:, None] - 2 * q @ R.T + r_sq[None, :]
+        if self_index is not None:
+            own = self_index[start:start + 1024]
+            rows = np.flatnonzero(own >= 0)
+            d[rows, own[rows]] = np.inf
         idx = np.argpartition(d, kmax - 1, axis=1)[:, :kmax]
         idx = np.take_along_axis(idx, np.take_along_axis(d, idx, 1).argsort(1), 1)
         hit = is_harmful[idx]
@@ -189,36 +184,22 @@ def _space(X_ref: np.ndarray, g_ref: np.ndarray, pca: int | None):
     return lambda X: proj.transform(ref.standardise(X)).astype(np.float32)
 
 
-def neighbours(X: np.ndarray, groups: np.ndarray, ks=KNN_KS, pca: int | None = None,
-               folds: int = 5, seed: int = 0) -> pd.DataFrame:
+def neighbours(X: np.ndarray, groups: np.ndarray, ks=KNN_KS, pca: int | None = None) -> pd.DataFrame:
     """knn_<k> for every row of X: balanced harmful share among its k nearest
-    reference prompts. Reference rows are scored out of fold, with the same
-    folds as `measure` (so a prompt is never its own neighbour), every other
-    row against all reference prompts."""
+    reference prompts, in the space standardised on all reference prompts.
+    A reference prompt is removed from its own candidate list."""
     groups = np.asarray(groups)
     is_ref = np.isin(groups, REFERENCE)
-    out = {k: np.full(len(X), np.nan) for k in ks}
-
-    ref_idx = np.flatnonzero(is_ref)
-    splitter = StratifiedKFold(n_splits=folds, shuffle=True, random_state=seed)
-    for train, test in splitter.split(ref_idx, groups[ref_idx]):
-        tr, te = ref_idx[train], ref_idx[test]
-        f = _space(X[tr], groups[tr], pca)
-        for k, v in _harmful_share(f(X[te]), f(X[tr]), groups[tr], ks).items():
-            out[k][te] = v
-
-    if (~is_ref).any():
-        f = _space(X[is_ref], groups[is_ref], pca)
-        for k, v in _harmful_share(f(X[~is_ref]), f(X[is_ref]), groups[is_ref], ks).items():
-            out[k][~is_ref] = v
-    return pd.DataFrame({f"knn_{k}": v for k, v in out.items()})
+    ref_pos = np.full(len(X), -1)
+    ref_pos[is_ref] = np.arange(is_ref.sum())
+    f = _space(X[is_ref], groups[is_ref], pca)
+    shares = _harmful_share(f(X), f(X[is_ref]), groups[is_ref], ks, self_index=ref_pos)
+    return pd.DataFrame({f"knn_{k}": v for k, v in shares.items()})
 
 
-def neighbours_frame(df: pd.DataFrame, column: str, ks=KNN_KS, pca: int | None = None,
-                     folds: int = 5, seed: int = 0) -> pd.DataFrame:
+def neighbours_frame(df: pd.DataFrame, column: str, ks=KNN_KS, pca: int | None = None) -> pd.DataFrame:
     """`neighbours` on one activation column; keeps the frame's index."""
     rows = activations.has(df, column)
-    out = neighbours(activations.matrix(df, column), df.loc[rows, "group"].to_numpy(),
-                     ks=ks, pca=pca, folds=folds, seed=seed)
+    out = neighbours(activations.matrix(df, column), df.loc[rows, "group"].to_numpy(), ks=ks, pca=pca)
     out.index = df.index[rows]
     return out

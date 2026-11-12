@@ -202,13 +202,38 @@ def test_scale_is_within_group_not_total():
     assert ref.scale[1] == pytest.approx(1, abs=0.15)
 
 
-def test_reference_rows_are_measured_out_of_fold():
-    X, groups = outlier_clouds(n=60, d=200)  # few prompts, many dims: in-sample bias is large
-    per_row, summary = centroids.measure(X, groups)
+def test_own_centroid_bias_is_the_exact_factor():
+    """Fitting on all references shrinks a member's distance to its own
+    centroid by exactly (1 - 1/n) compared with leaving it out."""
+    X, groups = outlier_clouds(n=150, d=40)
     ref = centroids.fit_reference(X, groups)
-    in_sample = ref.distances(X[groups == "harmless"])["harmless"].mean()
-    assert summary["harmless_mean"] > in_sample
-    assert per_row.out_of_fold.all()
+    i = int(np.flatnonzero(groups == "harmful")[0])
+    z = ref.standardise(X)
+    members = z[groups == "harmful"]
+    n = len(members)
+    with_self = np.linalg.norm(z[i] - members.mean(0))
+    without_self = np.linalg.norm(z[i] - (n * members.mean(0) - z[i]) / (n - 1))
+    assert with_self == pytest.approx(without_self * (1 - 1 / n), rel=1e-9)
+
+
+def test_reference_prompt_is_never_its_own_neighbour():
+    """A harmful prompt inside the harmless cloud: its neighbours, itself
+    excluded, are all harmless, so knn is 0; brute force agrees."""
+    rng = np.random.default_rng(0)
+    harmless = rng.normal(0, 1, (200, 5))
+    harmful = rng.normal(0, 1, (200, 5)) + 20
+    odd = np.zeros((1, 5))
+    X = np.vstack([harmless, harmful, odd])
+    groups = np.array(["harmless"] * 200 + ["harmful"] * 201)
+    knn = centroids.neighbours(X, groups, ks=(20,))
+    assert knn.knn_20.iloc[-1] == 0
+    # brute force on the standardised space, self removed
+    ref = centroids.fit_reference(X, groups)
+    z = ref.standardise(X)
+    d = np.linalg.norm(z - z[-1], axis=1)
+    d[-1] = np.inf
+    nearest = np.argsort(d)[:20]
+    assert (groups[nearest] == "harmless").all()
 
 
 def test_pseudo_rows_are_measured_not_used():
@@ -223,7 +248,6 @@ def test_pseudo_rows_are_measured_not_used():
     assert np.allclose(a.shift, b.shift) and np.allclose(a.scale, b.scale)
     per_row, _ = centroids.measure(X2, g2)
     half = per_row.iloc[len(X):len(X) + 50]
-    assert not half.out_of_fold.any()
     # halfway prompts: on average as far from one centroid as from the other
     assert abs((half.d_harmless - half.d_harmful).mean()) < 0.03
 

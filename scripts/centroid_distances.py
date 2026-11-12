@@ -7,7 +7,7 @@ results/<family>/centroids/:
   distances_<checkpoint>.parquet  one row per prompt x layer x position:
       metadata (prompt, source, category, label, group), the judge's
       behaviour (refused, response_type; NaN if incoherent or unjudged),
-      and d_harmless, d_harmful, z_harmless, z_harmful, closer_to, out_of_fold
+      and d_harmless, d_harmful, z_harmless, z_harmful, closer_to
       (linear: closer_to is one hyperplane), plus knn_10, knn_20, knn_50
       (non-linear: balanced harmful share among the k nearest reference prompts)
   summary_<checkpoint>.csv        one row per layer x position: separation of
@@ -67,7 +67,7 @@ def save_parquet(df: pd.DataFrame, path) -> None:
     os.replace(tmp, path)
 
 
-def run_checkpoint(family, ckpt, layers, positions, judged, folds, seed, pca):
+def run_checkpoint(family, ckpt, layers, positions, judged, pca):
     stage = config.stage_of(ckpt)
     rows, summaries = [], []
     for layer in layers:
@@ -75,9 +75,8 @@ def run_checkpoint(family, ckpt, layers, positions, judged, folds, seed, pca):
         df = df.merge(judged, on=refusal.KEY, how="left", validate="many_to_one")
         for pos in activations.expand(df, layer, positions):
             column = activations.col(layer, pos)
-            per_row, summary = centroids.measure_frame(df, column, folds=folds, seed=seed)
-            per_row = per_row.join(centroids.neighbours_frame(df, column, pca=pca,
-                                                              folds=folds, seed=seed))
+            per_row, summary = centroids.measure_frame(df, column)
+            per_row = per_row.join(centroids.neighbours_frame(df, column, pca=pca))
             for g in centroids.REFERENCE:
                 summary[f"knn20_{g}_mean"] = float(per_row.knn_20[per_row.group == g].mean())
             cell = {"checkpoint": ckpt, "layer": layer, "position": pos,
@@ -101,7 +100,7 @@ def _occurrence(df: pd.DataFrame, keys: list[str]) -> pd.Series:
     return df.groupby(keys, sort=False).cumcount()
 
 
-def add_knn(family, ckpt, folds, seed, pca, suffix, dist_path, summary_path):
+def add_knn(family, ckpt, pca, suffix, dist_path, summary_path):
     """Neighbour columns appended to an existing distances file (and summary)."""
     dist = pd.read_parquet(dist_path)
     names = [f"knn_{k}{suffix}" for k in centroids.KNN_KS]
@@ -114,8 +113,7 @@ def add_knn(family, ckpt, folds, seed, pca, suffix, dist_path, summary_path):
         positions = dist.loc[dist.layer == layer, "position"].unique().tolist()
         df = activations.load(family, [int(layer)], positions, [ckpt])
         for pos in positions:
-            knn = centroids.neighbours_frame(df, activations.col(layer, pos), pca=pca,
-                                             folds=folds, seed=seed)
+            knn = centroids.neighbours_frame(df, activations.col(layer, pos), pca=pca)
             knn.columns = [f"{c}{suffix}" for c in knn.columns]
             knn = df.loc[knn.index, ["source", "prompt"]].join(knn).assign(layer=layer, position=pos)
             pieces.append(knn)
@@ -143,8 +141,6 @@ def add_knn(family, ckpt, folds, seed, pca, suffix, dist_path, summary_path):
 def main():
     p = cli.parser(__doc__, activations=True)
     p.set_defaults(positions=["last_prompt", "post_instr", "pre_gen", "first_gen"])
-    p.add_argument("--folds", type=int, default=5)
-    p.add_argument("--seed", type=int, default=0)
     p.add_argument("--overwrite", action="store_true")
     p.add_argument("--pca", type=int, default=None, help="neighbours after PCA to N dims")
     p.add_argument("--tag", default="", help="suffix for output files, e.g. pca128 "
@@ -166,7 +162,7 @@ def main():
             if not dist_path.exists():
                 log.info("%s: no distances file, run without --add-knn first", ckpt)
                 continue
-            add_knn(args.family, ckpt, args.folds, args.seed, args.pca, suffix,
+            add_knn(args.family, ckpt, args.pca, suffix,
                     dist_path, out_dir / f"summary_{ckpt}.csv")
         parts = [pd.read_csv(out_dir / f"summary_{c}.csv") for c in args.checkpoints
                  if (out_dir / f"summary_{c}.csv").exists()]
@@ -180,7 +176,7 @@ def main():
             log.info("%s: already done, skipping (--overwrite to redo)", ckpt)
             continue
         dist, summary = run_checkpoint(args.family, ckpt, args.layers, args.positions,
-                                       judged, args.folds, args.seed, args.pca)
+                                       judged, args.pca)
         n_unjudged = int(dist.drop_duplicates(["prompt", "source"]).refused.isna().sum())
         log.info("%s: %d prompts without a usable judgement (kept: groups come from labels)",
                  ckpt, n_unjudged)
