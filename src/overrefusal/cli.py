@@ -20,4 +20,17 @@ def parser(description: str, activations: bool = False) -> argparse.ArgumentPars
                        default=["last_prompt", "post_instr", "first_gen"],
                        help="last_prompt, post_instr (all template tokens), post_instr_K, "
                             "pre_gen (last template token), first_gen")
+    _check_on_parse(p)
     return p
+
+
+def _check_on_parse(p: argparse.ArgumentParser) -> None:
+    """Every script that uses this parser refuses checkpoints of the other run."""
+    parse = p.parse_args
+
+    def parse_args(*args, **kwargs):
+        ns = parse(*args, **kwargs)
+        config.check_checkpoints(getattr(ns, "checkpoints", []) or [])
+        return ns
+
+    p.parse_args = parse_args

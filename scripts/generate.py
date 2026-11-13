@@ -41,7 +41,8 @@ def main():
             continue
 
         model, tok = models.load(args.family, stage)
-        texts = [prompts.build_prompt(tok, m, stage) for m in todo.prompt]
+        variant = config.variant_of(ckpt)
+        texts = [prompts.build_prompt(tok, m, stage, variant) for m in todo.prompt]
         g = config.GENERATION
         responses = []
         for i in range(0, len(texts), g.batch_size):

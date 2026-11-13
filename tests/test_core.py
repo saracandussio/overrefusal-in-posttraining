@@ -320,3 +320,57 @@ def test_per_dimension_d_is_cohens_d_and_separation_is_its_rms():
     _, summary = centroids.measure(X, groups)
     assert summary["n_dims_d_over_0.8"] == 1
     assert summary["d_abs_max"] == pytest.approx(abs(d).max())
+
+
+# --------------------------------------------------------------------------
+# the nosys run
+# --------------------------------------------------------------------------
+from pathlib import Path  # noqa: E402
+
+from overrefusal import config, prompts  # noqa: E402
+
+OLMO3_SYS = ("<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not "
+             "currently have access to any functions. <functions></functions><|im_end|>\n")
+
+
+class _Tok:
+    def __init__(self, prefix):
+        self.prefix = prefix
+
+    def apply_chat_template(self, messages, tokenize, add_generation_prompt):
+        return (self.prefix + "<|im_start|>user\n" + messages[0]["content"]
+                + "<|im_end|>\n<|im_start|>assistant\n")
+
+
+def test_nosys_removes_only_the_system_turn():
+    tok = _Tok(OLMO3_SYS)
+    with_sys = prompts.build_prompt(tok, "ciao?", "sft", "none")
+    without = prompts.build_prompt(tok, "ciao?", "sft", "nosys")
+    assert with_sys.startswith("<|im_start|>system")
+    assert without == "<|im_start|>user\nciao?<|im_end|>\n<|im_start|>assistant\n"
+    assert with_sys.endswith(without)
+    # a template without a system turn is left alone, and the base is untouched
+    assert prompts.build_prompt(_Tok(""), "ciao?", "sft", "nosys") == without
+    assert prompts.build_prompt(tok, "ciao?", "base", "nosys") == config.BASE_FRAME.format(message="ciao?")
+    with pytest.raises(ValueError):
+        prompts.build_prompt(tok, "ciao?", "sft", "other")
+
+
+def test_variant_run_never_writes_to_the_original_results(monkeypatch):
+    import importlib
+    monkeypatch.setenv("OVERREFUSAL_VARIANT", "nosys")
+    cfg = importlib.reload(config)
+    try:
+        assert cfg.results_dir("olmo3") == Path("results_nosys") / "olmo3"
+        assert cfg.figures_dir("olmo3") == Path("figures_nosys") / "olmo3"
+        assert cfg.CHECKPOINTS == ["base__none", "sft__nosys", "dpo__nosys", "final__nosys"]
+        cfg.check_checkpoints(["base__none", "sft__nosys"])
+        with pytest.raises(SystemExit):
+            cfg.check_checkpoints(["sft__none"])
+    finally:
+        monkeypatch.delenv("OVERREFUSAL_VARIANT")
+        cfg = importlib.reload(config)
+    assert cfg.results_dir("olmo3") == Path("results") / "olmo3"
+    assert cfg.CHECKPOINTS == ["base__none", "sft__none", "dpo__none", "final__none"]
+    with pytest.raises(SystemExit):
+        cfg.check_checkpoints(["dpo__nosys"])

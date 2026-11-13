@@ -5,6 +5,7 @@ nothing else changes between families.
 """
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -28,13 +29,48 @@ MODELS: dict[str, dict[str, str]] = {
     },
 }
 
-# Tags keep the "<stage>__none" form used by every existing result file
-# ("none" = no system prompt; the mistral_safety runs are no longer used).
-CHECKPOINTS = [f"{s}__none" for s in STAGES]
+# --------------------------------------------------------------------------
+# Run variant
+# --------------------------------------------------------------------------
+# "<stage>__none" means: no system prompt *passed*. OLMo 3's chat template then
+# inserts its default one ("You are a helpful function-calling AI
+# assistant..."); OLMo 2's has none. The original runs use that.
+#
+# OVERREFUSAL_VARIANT=nosys switches to a separate run in which post-trained
+# checkpoints are prompted with no system turn at all. Everything it writes
+# goes to results_nosys/ and figures_nosys/, its post-trained checkpoints are
+# tagged "<stage>__nosys" (so their activations get their own folder on the
+# Hub), and every script refuses checkpoints of the other run. The original
+# results are never written by a nosys run. The base model has no chat
+# template, so "base__none" is shared and only read.
+VARIANT = os.environ.get("OVERREFUSAL_VARIANT", "")
+_VARIANT_TAGS = {"": "none", "nosys": "nosys"}
+if VARIANT not in _VARIANT_TAGS:
+    raise ValueError(f"OVERREFUSAL_VARIANT must be one of {sorted(_VARIANT_TAGS)}, got {VARIANT!r}")
+RUN_TAG = _VARIANT_TAGS[VARIANT]
+
+CHECKPOINTS = [f"{s}__{'none' if s == 'base' else RUN_TAG}" for s in STAGES]
 
 
 def stage_of(tag: str) -> str:
     return tag.split("__", 1)[0]
+
+
+def variant_of(tag: str) -> str:
+    """System-prompt variant of a checkpoint tag: 'none' or 'nosys'."""
+    return tag.split("__", 1)[1] if "__" in tag else "none"
+
+
+def check_checkpoints(tags) -> None:
+    """Refuse checkpoints that belong to the other run, so a run can only
+    write where it is meant to."""
+    for tag in tags:
+        if stage_of(tag) == "base":
+            continue
+        if variant_of(tag) != RUN_TAG:
+            raise SystemExit(
+                f"checkpoint {tag!r} is not part of this run (OVERREFUSAL_VARIANT={VARIANT!r}, "
+                f"post-trained checkpoints must end in '__{RUN_TAG}')")
 
 
 # --------------------------------------------------------------------------
@@ -49,7 +85,11 @@ ACTIVATIONS_PATH = "data/{family}/{checkpoint}/*.parquet"
 
 
 def results_dir(family: str) -> Path:
-    return Path("results") / family
+    return Path("results" + (f"_{VARIANT}" if VARIANT else "")) / family
+
+
+def figures_dir(family: str) -> Path:
+    return Path("figures" + (f"_{VARIANT}" if VARIANT else "")) / family
 
 
 def raw_results_csv(family: str) -> Path:

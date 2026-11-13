@@ -27,6 +27,8 @@ def main():
     p.add_argument("--replace", action="store_true",
                    help="swap out existing shards of the selected checkpoints")
     args = p.parse_args()
+    if config.VARIANT and args.replace:
+        raise SystemExit("--replace is not allowed in a variant run: it could delete shared shards")
 
     api = HfApi(token=activations.hf_token())
     api.create_repo(args.repo, repo_type="dataset", private=True, exist_ok=True)
@@ -41,6 +43,10 @@ def main():
                              "use --replace or a new --repo")
 
         stage = config.stage_of(ckpt)
+        if config.VARIANT and stage == "base":
+            print(f"{ckpt}: shared with the original run, its activations are reused; skipped")
+            continue
+        variant = config.variant_of(ckpt)
         rows = raw[raw.checkpoint == ckpt]
         model, tok = models.load(args.family, stage)
         layers = config.select_layers(model.config.num_hidden_layers)
@@ -48,7 +54,7 @@ def main():
         with tempfile.TemporaryDirectory() as tmp:
             buffer, shard = [], 0
             for n, r in enumerate(rows.itertuples(), 1):
-                text = prompts.build_prompt(tok, r.prompt, stage)
+                text = prompts.build_prompt(tok, r.prompt, stage, variant)
                 acts = activations.extract(model, tok, text, r.prompt, str(r.response), layers)
                 meta = {c: getattr(r, c) for c in activations.META}
                 buffer.append(meta | {k: v.tolist() for k, v in acts.items()})

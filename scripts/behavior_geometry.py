@@ -136,6 +136,7 @@ def main():
     p.add_argument("--positions", nargs="+", default=["last_prompt", "pre_gen", "first_gen"],
                    help="positions to keep (default: the three discussed in the report)")
     args = p.parse_args()
+    config.check_checkpoints(args.checkpoints)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
     out_dir = config.results_dir(args.family) / "behavior_geometry"
@@ -158,8 +159,9 @@ def main():
     save_atomic(pd.concat(pairs, ignore_index=True), out_dir / "appendix_by_pair.csv")
     log.info("by_class written")
 
-    if {"sft__none", "dpo__none"} <= merged.keys():
-        sft, dpo = merged["sft__none"], merged["dpo__none"]
+    sft_tag, dpo_tag = f"sft__{config.RUN_TAG}", f"dpo__{config.RUN_TAG}"
+    if {sft_tag, dpo_tag} <= merged.keys():
+        sft, dpo = merged[sft_tag], merged[dpo_tag]
         save_atomic(transitions(sft, dpo, by_source=False), out_dir / "transitions.csv")
         save_atomic(transitions(sft, dpo, by_source=True), out_dir / "transitions_by_source.csv")
         log.info("transitions written")

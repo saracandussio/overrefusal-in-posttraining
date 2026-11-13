@@ -39,7 +39,8 @@ BEHAVIOUR_COLOURS = {"refusal": "#b2182b", "weak refusal": "#ef8a62",
                      "weak answer": "#67a9cf", "answer": "#2166ac"}
 ZONES = ["harmful-like", "mixed", "harmless-like"]
 ZONE_COLOURS = {"harmful-like": "#762a83", "mixed": "#bababa", "harmless-like": "#1b7837"}
-STAGE_NAMES = {"base__none": "base", "sft__none": "SFT", "dpo__none": "DPO", "final__none": "final"}
+STAGE_NAMES = {f"{s}__{v}": n for s, n in [("base", "base"), ("sft", "SFT"), ("dpo", "DPO"), ("final", "final")]
+               for v in ("none", "nosys")}
 GROUP_NAMES = {"pseudo_harm": "pseudo", "harmful": "harmful", "harmless": "harmless"}
 KEY = ["source", "prompt"]
 
@@ -180,7 +181,7 @@ def main():
     p.add_argument("--positions", nargs="+", default=["last_prompt", "pre_gen"])
     p.add_argument("--groups", nargs="+", default=["pseudo_harm", "harmful"])
     args = p.parse_args()
-    out_dir = Path("figures") / args.family / "flows"
+    out_dir = config.figures_dir(args.family) / "flows"
     ckpts = list(config.CHECKPOINTS)
 
     beh = behaviour_table(args.family)
@@ -201,8 +202,10 @@ def main():
         legend(fig, ZONE_COLOURS, ZONES, "zone (knn_20: < 0.3, 0.3-0.7, > 0.7)", -0.08)
         save(fig, out_dir / f"geometry_{pos}_L{args.layer}")
 
-        both = beh.merge(zt[KEY + ["sft__none"]].rename(columns={"sft__none": "zone_sft"}), on=KEY)
-        fig = panels(both, args.groups, ["sft__none", "dpo__none"], BEHAVIOUR, BEHAVIOUR_COLOURS,
+        sft_col = [c for c in ckpts if config.stage_of(c) == "sft"][0]
+        both = beh.merge(zt[KEY + [sft_col]].rename(columns={sft_col: "zone_sft"}), on=KEY)
+        sft_tag, dpo_tag = [c for c in ckpts if config.stage_of(c) in ("sft", "dpo")]
+        fig = panels(both, args.groups, [sft_tag, dpo_tag], BEHAVIOUR, BEHAVIOUR_COLOURS,
                      f"{args.family}: response type SFT -> DPO, ribbons coloured by zone in SFT "
                      f"at {pos}, layer {args.layer}", None,
                      ribbon_by="zone_sft", ribbon_colours=ZONE_COLOURS, ribbon_order=ZONES)
